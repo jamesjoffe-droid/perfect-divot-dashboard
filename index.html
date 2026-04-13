@@ -130,8 +130,8 @@
                 <div class="stat-value" id="totalVideos">—</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Total Reach</div>
-                <div class="stat-value" id="totalReach">—</div>
+                <div class="stat-label">Total Views</div>
+                <div class="stat-value" id="totalViews">—</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Transcribed</div>
@@ -169,7 +169,7 @@
         <div class="tab-content" id="trends-tab">
             <div class="panel">
                 <div class="panel-header">
-                    <h2 class="panel-title">Daily Reach Trend</h2>
+                    <h2 class="panel-title">Daily Views Trend</h2>
                 </div>
                 <div class="trends-container">
                     <div class="trend-chart" id="trendChart">
@@ -242,13 +242,13 @@
                 for (let video of videos) {
                     try {
                         const insightsResponse = await fetch(
-                            `https://graph.facebook.com/${API_VERSION}/${video.id}/insights?metric=reach&access_token=${ACCESS_TOKEN}`
+                            `https://graph.facebook.com/${API_VERSION}/${video.id}/insights?metric=views&access_token=${ACCESS_TOKEN}`
                         );
                         const insightsData = await insightsResponse.json();
                         if (insightsData.data && insightsData.data[0]) {
-                            video.reach = insightsData.data[0].values[0].value;
+                            video.views = insightsData.data[0].values[0].value;
                         }
-                    } catch (e) { video.reach = 0; }
+                    } catch (e) { video.views = 0; }
                 }
 
                 document.getElementById('statusDot').className = 'status-dot';
@@ -268,7 +268,7 @@
 
         function renderStats() {
             document.getElementById('totalVideos').textContent = videos.length;
-            document.getElementById('totalReach').textContent = formatNumber(videos.reduce((sum, v) => sum + (v.reach || 0), 0));
+            document.getElementById('totalViews').textContent = formatNumber(videos.reduce((sum, v) => sum + (v.views || 0), 0));
             
             const transcribedCount = videos.filter(v => transcripts[v.id]).length;
             document.getElementById('transcribedCount').textContent = `${transcribedCount}/${videos.length}`;
@@ -309,7 +309,7 @@
                                         ? `<span class="hook-tag ${hookClass}">${hookType}</span>`
                                         : `<span class="hook-tag other">Not analyzed</span>`
                                     }
-                                    <span class="video-stats">👁 ${formatNumber(video.reach || 0)} · ♥ ${video.like_count || 0} · 💬 ${video.comments_count || 0}</span>
+                                    <span class="video-stats">👁 ${formatNumber(video.views || 0)} · ♥ ${video.like_count || 0} · 💬 ${video.comments_count || 0}</span>
                                     <span class="video-date">${formatDate(video.timestamp)}</span>
                                 </div>
                             </div>
@@ -351,34 +351,34 @@
             transcribedVideos.forEach(v => {
                 const hookText = transcripts[v.id].split('.')[0];
                 const hookType = classifyHook(hookText);
-                if (!hookData[hookType]) hookData[hookType] = { count: 0, totalReach: 0 };
+                if (!hookData[hookType]) hookData[hookType] = { count: 0, totalViews: 0 };
                 hookData[hookType].count++;
-                hookData[hookType].totalReach += v.reach || 0;
+                hookData[hookType].totalViews += v.views || 0;
             });
 
             const sorted = Object.entries(hookData)
-                .map(([name, data]) => ({ name, ...data, avgReach: data.totalReach / data.count }))
-                .sort((a, b) => b.avgReach - a.avgReach);
+                .map(([name, data]) => ({ name, ...data, avgViews: data.totalViews / data.count }))
+                .sort((a, b) => b.avgViews - a.avgViews);
 
-            const maxAvg = Math.max(...sorted.map(h => h.avgReach));
+            const maxAvg = Math.max(...sorted.map(h => h.avgViews));
 
             document.getElementById('hookAnalysis').innerHTML = `
                 <div class="hook-row hook-row-header">
                     <span>Hook Type</span>
                     <span>Performance</span>
                     <span style="text-align:right">Videos</span>
-                    <span style="text-align:right">Total Reach</span>
-                    <span style="text-align:right">Avg Reach</span>
+                    <span style="text-align:right">Total Views</span>
+                    <span style="text-align:right">Avg Views</span>
                 </div>
                 ${sorted.map(hook => `
                     <div class="hook-row">
                         <span class="hook-name">${hook.name}</span>
                         <div class="hook-bar-bg">
-                            <div class="hook-bar" style="width: ${(hook.avgReach / maxAvg) * 100}%"></div>
+                            <div class="hook-bar" style="width: ${(hook.avgViews / maxAvg) * 100}%"></div>
                         </div>
                         <span class="hook-stat">${hook.count}</span>
-                        <span class="hook-stat">${formatNumber(hook.totalReach)}</span>
-                        <span class="hook-stat highlight">${formatNumber(Math.round(hook.avgReach))}</span>
+                        <span class="hook-stat">${formatNumber(hook.totalViews)}</span>
+                        <span class="hook-stat highlight">${formatNumber(Math.round(hook.avgViews))}</span>
                     </div>
                 `).join('')}
             `;
@@ -390,7 +390,7 @@
             videos.forEach(v => {
                 const dateKey = new Date(v.timestamp).toISOString().split('T')[0];
                 if (!dayData[dateKey]) dayData[dateKey] = 0;
-                dayData[dateKey] += v.reach || 0;
+                dayData[dateKey] += v.views || 0;
             });
 
             const days = Object.entries(dayData).sort((a, b) => a[0].localeCompare(b[0]));
