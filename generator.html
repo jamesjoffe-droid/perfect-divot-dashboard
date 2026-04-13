@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Generator - The Perfect Divot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.5; }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #c9a227, #a8860d); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .logo-text { font-size: 20px; font-weight: 700; }
+        .logo-sub { font-size: 13px; color: #6b7280; }
+        .nav-link { color: #16a34a; text-decoration: none; font-weight: 500; font-size: 14px; }
+        .nav-link:hover { text-decoration: underline; }
+        .panel { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 1.5rem; margin-bottom: 1.5rem; }
+        .panel-title { font-size: 18px; font-weight: 600; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { font-size: 13px; color: #6b7280; display: block; margin-bottom: 8px; font-weight: 500; }
+        select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white; cursor: pointer; }
+        select:focus { outline: none; border-color: #16a34a; }
+        .btn { background: #16a34a; color: white; border: none; border-radius: 8px; padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; }
+        .btn:hover { background: #15803d; }
+        .btn-sm { padding: 8px 16px; font-size: 13px; width: auto; }
+        .btn-outline { background: white; color: #374151; border: 1px solid #d1d5db; }
+        .btn-outline:hover { background: #f3f4f6; }
+        .results { display: none; }
+        .results.show { display: block; }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .results-title { font-size: 14px; font-weight: 600; color: #6b7280; }
+        .script-card { background: #f9fafb; border-radius: 10px; padding: 1.25rem; margin-bottom: 12px; border: 1px solid #e5e7eb; }
+        .script-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .script-number { font-size: 12px; color: #9ca3af; font-weight: 600; }
+        .script-text { font-size: 14px; line-height: 1.7; color: #374151; }
+        .btn-copy { padding: 6px 14px; font-size: 12px; }
+        .btn-copied { background: #d1fae5 !important; color: #065f46 !important; border-color: #d1fae5 !important; }
+        .formula-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.5rem; }
+        .formula-title { font-size: 14px; font-weight: 600; color: #065f46; margin-bottom: 10px; }
+        .formula-list { font-size: 13px; color: #166534; }
+        .formula-list li { margin-bottom: 4px; }
+        footer { text-align: center; padding: 2rem; color: #6b7280; font-size: 13px; }
+        footer a { color: #16a34a; text-decoration: none; font-weight: 600; }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">⛳</div>
+                <div>
+                    <div class="logo-text">Script Generator</div>
+                    <div class="logo-sub">The Perfect Divot</div>
+                </div>
+            </div>
+            <a href="index.html" class="nav-link">← Back to Dashboard</a>
+        </div>
+
+        <div class="formula-box">
+            <div class="formula-title">Your winning formula</div>
+            <ol class="formula-list">
+                <li><strong>Hook</strong> — Identity, frustration, question, tip, or bold opener</li>
+                <li><strong>Problem</strong> — Range mats lie / hide mistakes</li>
+                <li><strong>Solution</strong> — The Perfect Divot</li>
+                <li><strong>Credibility</strong> — 3/32nds inch technical detail</li>
+                <li><strong>Benefit</strong> — Real grass feel / honest feedback</li>
+                <li><strong>CTA</strong> — GolfMatsSuck.com or link in bio</li>
+            </ol>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Generate new scripts</div>
+            
+            <div class="form-group">
+                <label class="form-label">Hook type</label>
+                <select id="hookType">
+                    <option value="identity">Identity callout — "If you're a golfer..."</option>
+                    <option value="frustration">Shared frustration — Range mats suck</option>
+                    <option value="question">Question hook — "Ever wonder why..."</option>
+                    <option value="tip">Quick tip — "Here's a hack..."</option>
+                    <option value="bold">Bold statement — "Stop doing this..."</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Focus angle</label>
+                <select id="angle">
+                    <option value="general">General — The Perfect Divot benefits</option>
+                    <option value="feel">Feel — Simulate real grass contact</option>
+                    <option value="practice">Practice quality — Better range sessions</option>
+                    <option value="portability">Portability — Fits in your bag</option>
+                    <option value="price">Value — Affordable upgrade</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="generateScripts()">Generate 5 Script Variations</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="panel">
+                <div class="results-header">
+                    <span class="results-title">Generated Scripts</span>
+                </div>
+                <div id="scriptList"></div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="https://golfmatssuck.com" target="_blank">GolfMatsSuck.com</a> · The Perfect Divot
+        </footer>
+    </div>
+
+    <script>
+const scripts = {
+  identity: {
+    general: [
+      "If you're a golfer who practices at the range, you know that feeling when you pure a shot on the mat but it feels nothing like the course. That's because range mats lie to you. The Perfect Divot elevates your ball 3/32nds of an inch — the exact height of real grass. Now every shot feels like the course. Fits right in your bag. Link in bio.",
+      "If you're a golfer, you've probably noticed your range sessions don't translate to the course. Here's why — mats don't give you real feedback. We made The Perfect Divot to fix that. It lifts your ball 3/32nds of an inch so you get that true grass feel on every swing. Check it out at GolfMatsSuck.com.",
+      "If you're a golfer who actually wants to improve, you need to feel the difference between good and bad contact. Range mats hide your mistakes. The Perfect Divot gives you honest feedback by replicating real turf height. 3/32nds of an inch makes all the difference. Link's in the bio.",
+      "If you're a golfer tired of striping balls at the range then chunking on the course, I get it. Mats are forgiving in all the wrong ways. That's why we built The Perfect Divot — it elevates your ball to simulate real grass so you actually know how you're hitting it. GolfMatsSuck.com.",
+      "If you're a golfer who takes practice seriously, you need The Perfect Divot. It raises your ball 3/32nds of an inch off the mat — same as sitting on real grass. No more false confidence from fat shots that feel pure. Get yours at GolfMatsSuck.com."
+    ],
+    feel: [
+      "If you're a golfer, you know mat contact feels completely different from grass. That weird bouncy feeling? Gone. The Perfect Divot elevates your ball 3/32nds of an inch so every strike feels like you're on the course. Finally, practice that transfers. Link in bio.",
+      "If you're a golfer chasing that pure contact feeling at the range, here's the problem — mats don't let you feel your mishits. The Perfect Divot fixes that by lifting your ball to real grass height. 3/32nds of an inch, but it changes everything. GolfMatsSuck.com.",
+      "If you're a golfer who loves that feeling of compressing the ball off real turf, you're gonna love this. The Perfect Divot simulates grass contact on any mat. 3/32nds of an inch elevation. The feel is unreal. Check it out, link in bio.",
+      "If you're a golfer, nothing beats that crisp feeling of ball-first contact on grass. But range mats? They lie. The Perfect Divot brings back real feel by elevating your ball to actual turf height. Trust your contact again. GolfMatsSuck.com.",
+      "If you're a golfer frustrated that range shots feel nothing like course shots, this is for you. The Perfect Divot elevates your ball 3/32nds of an inch — just like real grass. You'll actually feel your strikes. Game changer. Link in bio."
+    ],
+    practice: [
+      "If you're a golfer putting in hours at the range but not seeing results on the course, your mat is the problem. The Perfect Divot makes every practice shot count by simulating real turf contact. 3/32nds of an inch elevation. Better practice, better scores. GolfMatsSuck.com.",
+      "If you're a golfer who actually wants range time to matter, listen up. Mats give you false feedback on bad swings. The Perfect Divot fixes that — elevates your ball 3/32nds of an inch for true grass feel. Quality practice starts here. Link in bio.",
+      "If you're a golfer serious about improving, you need honest feedback. Range mats hide your mistakes. The Perfect Divot elevates your ball to real grass height so you know exactly how you're hitting it. Practice with purpose. GolfMatsSuck.com.",
+      "If you're a golfer wondering why your range game doesn't show up on the course, here's the truth — mats are lying to you. The Perfect Divot creates real turf conditions anywhere. 3/32nds of an inch. Real feedback. Real improvement. Link in bio.",
+      "If you're a golfer who's tired of wasting range sessions, The Perfect Divot is what you need. It elevates your ball to simulate grass so every swing gives you honest feedback. No more guessing. Practice actually works now. GolfMatsSuck.com."
+    ],
+    portability: [
+      "If you're a golfer who practices anywhere, you need this. The Perfect Divot fits right in your bag — weighs almost nothing. Set it on any mat and instantly get real grass feel. 3/32nds of an inch elevation, massive difference. GolfMatsSuck.com.",
+      "If you're a golfer, imagine having real turf feel in your pocket. The Perfect Divot is small enough for your bag but transforms any mat into a proper practice surface. 3/32nds of an inch. Take it anywhere. Link in bio.",
+      "If you're a golfer on the go, this fits your game. The Perfect Divot travels with you — throw it in your bag, set it on any range mat, and practice like you're on grass. Portable. Simple. Effective. GolfMatsSuck.com.",
+      "If you're a golfer, you can't bring grass to the range, but you can bring this. The Perfect Divot slides right into your bag. Sets up in seconds. Gives you real turf feel on any mat. 3/32nds of an inch makes it happen. Link in bio.",
+      "If you're a golfer who bounces between ranges, here's your secret weapon. The Perfect Divot is completely portable — fits in any bag pocket. Pop it on the mat, get real grass contact. No excuses. Practice right everywhere. GolfMatsSuck.com."
+    ],
+    price: [
+      "If you're a golfer looking to improve without breaking the bank, this is it. The Perfect Divot costs less than a sleeve of Pro V1s but transforms every range session. Real grass feel for under 40 bucks. No brainer. GolfMatsSuck.com.",
+      "If you're a golfer, you've probably spent hundreds on lessons and equipment. But for less than $40, The Perfect Divot gives you real turf feedback on every shot. Best value upgrade you'll make this year. Link in bio.",
+      "If you're a golfer on a budget, hear me out. The Perfect Divot is the cheapest way to practice like the pros. Under $40 for real grass feel at any range. Pays for itself in better practice. GolfMatsSuck.com.",
+      "If you're a golfer, think about what you spend on range balls. Now for less than $40, you can make every bucket count. The Perfect Divot gives you real turf conditions anywhere. Easy investment. Link in bio.",
+      "If you're a golfer who wants pro-level practice without pro-level costs, The Perfect Divot delivers. Under 40 bucks. Fits in your bag. Real grass feel on any mat. Do the math. GolfMatsSuck.com."
+    ]
+  },
+  frustration: {
+    general: [
+      "Range mats suck. You know it, I know it. You hit a fat shot and it still flies 150 yards like nothing happened. Then you get on the course and chunk it into the pond. The Perfect Divot fixes that. Elevates your ball 3/32nds of an inch so you actually feel your mistakes. GolfMatsSuck.com.",
+      "I hate range mats. They lie to your face. Every chunked shot gets saved by that bouncy rubber garbage. That's why we made The Perfect Divot — it simulates real grass height so you get honest feedback. 3/32nds of an inch changes everything. Link in bio.",
+      "Range mats are the worst thing about practicing golf. They reward bad swings and give you zero feedback. The Perfect Divot puts an end to that lie. It elevates your ball to real turf height — 3/32nds of an inch. Now you'll know. GolfMatsSuck.com.",
+      "You know what drives me crazy? Hitting it pure at the range, then chunking it on the course. Range mats are the problem. The Perfect Divot is the solution. 3/32nds of an inch elevation gives you real grass contact. Finally. Link in bio.",
+      "Sick of range mats lying to you? Same. A fat shot shouldn't feel like a stripe. That's why The Perfect Divot exists. It lifts your ball 3/32nds of an inch — real grass height — so you know exactly how you hit it. GolfMatsSuck.com."
+    ],
+    feel: [
+      "Range mats feel nothing like grass. That springy bounce is giving you false confidence on every shot. The Perfect Divot kills that lie — elevates your ball 3/32nds of an inch for real turf contact. Feel the difference. GolfMatsSuck.com.",
+      "Hate how range mats feel? Same. That fake, bouncy contact is ruining your practice. The Perfect Divot brings back real feedback by lifting your ball to true grass height. 3/32nds of an inch. Your hands will thank you. Link in bio.",
+      "Range mat feel is disgusting. Nothing like real turf. That's why I use The Perfect Divot — it elevates your ball 3/32nds of an inch so every strike feels like the course. Bye bye rubber bounce. GolfMatsSuck.com.",
+      "That gross mat feeling is lying to you. Bouncy, forgiving garbage. The Perfect Divot fixes it by lifting your ball to actual turf height. 3/32nds of an inch. Now practice feels real. Link in bio.",
+      "If you're tired of that weird range mat feel, The Perfect Divot is your answer. No more bouncy false contact. Just real grass feel, 3/32nds of an inch off the mat. Your irons will feel like they should. GolfMatsSuck.com."
+    ],
+    practice: [
+      "Range mats are killing your game. You practice for hours getting false feedback on every shot. The Perfect Divot stops the lies — elevates your ball 3/32nds of an inch for real turf conditions. Practice that actually works. GolfMatsSuck.com.",
+      "Wasting time at the range? Blame the mat. It's hiding your mistakes and building bad habits. The Perfect Divot gives you honest feedback by simulating real grass. 3/32nds of an inch makes your practice count. Link in bio.",
+      "Range mats are why your practice doesn't transfer to the course. They forgive fat shots that grass would punish. The Perfect Divot fixes that — real turf height, real feedback, real improvement. GolfMatsSuck.com.",
+      "Frustrated that range sessions don't help? Your mat is the problem. It's saving shots that would be disasters on grass. The Perfect Divot tells you the truth. 3/32nds of an inch of brutal honesty. Link in bio.",
+      "Range mats are practice killers. All that work building a false swing. The Perfect Divot creates real conditions so your practice actually transfers. 3/32nds of an inch elevation. Game changer. GolfMatsSuck.com."
+    ],
+    portability: [
+      "Range mats suck everywhere. Good thing The Perfect Divot fits in your bag. Take it to any range and turn that garbage mat into a real practice surface. 3/32nds of an inch of grass feel, anywhere. GolfMatsSuck.com.",
+      "Sick of bad mats at every range you visit? Bring your own solution. The Perfect Divot travels with you — weighs nothing, fits anywhere, fixes any mat. 3/32nds of an inch. No more excuses. Link in bio.",
+      "Every range has terrible mats. Now you can fix them all. The Perfect Divot fits in your bag and gives you real turf feel anywhere. Portable, simple, essential. GolfMatsSuck.com.",
+      "Range mats are universally awful. The Perfect Divot is the universal fix. Throw it in your bag, use it anywhere. 3/32nds of an inch of real grass feel on demand. Link in bio.",
+      "Bad mats at your range? Probably. The Perfect Divot travels with you. Sets up in seconds on any surface. Real turf height, real feedback, real portable. GolfMatsSuck.com."
+    ],
+    price: [
+      "Range mats have been ripping you off for years — hiding your mistakes, wasting your practice time. Fix it for under $40. The Perfect Divot gives you real grass feedback on any mat. Best money you'll spend on golf. GolfMatsSuck.com.",
+      "You spend money on balls that mats help you mis-hit. Invest $40 in The Perfect Divot and make every range session count. Real grass feel, real feedback. No more wasted practice. Link in bio.",
+      "Range mats cost you more than you think — bad habits, false confidence, chunked shots on the course. Fix it all for under $40. The Perfect Divot. Cheapest swing fix in golf. GolfMatsSuck.com.",
+      "Mats are stealing your money by ruining your practice. For less than $40, The Perfect Divot gives it back. Real turf feel, honest feedback, actual improvement. Worth it. Link in bio.",
+      "Range mats suck. You know what doesn't? Spending under $40 to fix them forever. The Perfect Divot gives you grass feel on any mat. Best cheap golf upgrade there is. GolfMatsSuck.com."
+    ]
+  },
+  question: {
+    general: [
+      "Ever wonder why your range game doesn't show up on the course? It's the mats. They save your bad shots and give you false confidence. The Perfect Divot fixes that — elevates your ball 3/32nds of an inch to simulate real grass. Now you know the truth. GolfMatsSuck.com.",
+      "Why do fat shots feel fine at the range but chunk on the course? Your mat is lying. The Perfect Divot creates real turf conditions by lifting your ball 3/32nds of an inch. Get honest feedback. Link in bio.",
+      "Have you ever striped it at the range then struggled on the course? Here's why — mats don't give real feedback. The Perfect Divot does. 3/32nds of an inch elevation. Real grass feel. Real improvement. GolfMatsSuck.com.",
+      "What if you could turn any range mat into real grass conditions? You can. The Perfect Divot elevates your ball 3/32nds of an inch — exact height of turf. Practice like you play. Link in bio.",
+      "Why do pros hit off grass while you're stuck on rubber? Because feel matters. The Perfect Divot brings that pro-level feedback to any range. 3/32nds of an inch changes everything. GolfMatsSuck.com."
+    ],
+    feel: [
+      "Ever notice how range mats feel nothing like grass? That bouncy contact is lying to you. The Perfect Divot fixes it — 3/32nds of an inch elevation for real turf feel. Trust your hands again. GolfMatsSuck.com.",
+      "Why does hitting off mats feel so wrong? Because it is wrong. The Perfect Divot simulates actual grass height so your contact feels real again. 3/32nds of an inch. Game changing feel. Link in bio.",
+      "What if you could feel your mishits at the range? You can. The Perfect Divot lifts your ball to real turf height — 3/32nds of an inch. No more hidden chunks. Real feedback. GolfMatsSuck.com.",
+      "Have you noticed fat shots feel pure on mats? That's the problem. The Perfect Divot brings back real feel by elevating your ball to grass height. 3/32nds of an inch of honesty. Link in bio.",
+      "Why does grass feel different than mats? Height. The ball sits 3/32nds of an inch higher on real turf. The Perfect Divot replicates exactly that. Real feel, any range. GolfMatsSuck.com."
+    ],
+    practice: [
+      "Why isn't your practice paying off? Your mat is hiding your mistakes. The Perfect Divot shows you the truth — real grass conditions, 3/32nds of an inch of honest feedback. Practice that works. GolfMatsSuck.com.",
+      "Ever wonder why hours of range time don't help? Mats give false feedback. The Perfect Divot fixes that by simulating real turf. 3/32nds of an inch elevation. Productive practice finally. Link in bio.",
+      "What if every range session actually improved your game? It can. The Perfect Divot creates real grass conditions on any mat. 3/32nds of an inch. Practice that transfers. GolfMatsSuck.com.",
+      "Why do you hit it great at the range and terrible on the course? False feedback from mats. The Perfect Divot gives you truth. 3/32nds of an inch of real grass feel. Link in bio.",
+      "Have you ever questioned why your range sessions don't count? The mat. It's lying. The Perfect Divot creates honest conditions — real turf height, real feedback. Finally improve. GolfMatsSuck.com."
+    ],
+    portability: [
+      "What if you could take real grass feel to any range? You can. The Perfect Divot fits in your bag and transforms any mat. 3/32nds of an inch. Portable perfection. GolfMatsSuck.com.",
+      "Ever wish you could fix every bad range mat? Done. The Perfect Divot travels with you — weighs nothing, works anywhere. 3/32nds of an inch of grass feel on demand. Link in bio.",
+      "Why settle for whatever mat the range gives you? Bring your own fix. The Perfect Divot fits in any bag. Real turf conditions anywhere. 3/32nds of an inch. GolfMatsSuck.com.",
+      "What's the easiest way to improve your range sessions? This. The Perfect Divot — fits in your bag, fixes any mat. 3/32nds of an inch of real grass feel. Portable. Simple. Link in bio.",
+      "Why struggle with different mats at different ranges? The Perfect Divot travels with you. Same real grass feel everywhere. 3/32nds of an inch. Fits right in your bag. GolfMatsSuck.com."
+    ],
+    price: [
+      "What's the cheapest way to upgrade your practice? Under $40 — The Perfect Divot. Real grass feel on any mat. 3/32nds of an inch. Best value in golf. GolfMatsSuck.com.",
+      "How much would you pay for pro-level practice conditions? Try less than $40. The Perfect Divot gives you real turf feel anywhere. 3/32nds of an inch of value. Link in bio.",
+      "What's the best bang for your buck in golf? The Perfect Divot. Under $40 for real grass conditions at any range. 3/32nds of an inch. Easy decision. GolfMatsSuck.com.",
+      "Why spend hundreds on lessons when your mat is lying? Fix the foundation first. The Perfect Divot — under $40 for honest practice. 3/32nds of an inch. Link in bio.",
+      "What if under $40 could fix your range sessions forever? It can. The Perfect Divot — real grass feel, any mat, any range. 3/32nds of an inch. Worth it. GolfMatsSuck.com."
+    ]
+  },
+  tip: {
+    general: [
+      "Here's a hack for better range sessions. Your mat is lying to you — but The Perfect Divot fixes it. Elevates your ball 3/32nds of an inch to simulate real grass. Instant honest feedback. Fits in your bag. GolfMatsSuck.com.",
+      "Quick tip to improve your practice immediately. Put The Perfect Divot under your ball — it lifts it 3/32nds of an inch to real turf height. Now you'll actually feel your contact. Game changer. Link in bio.",
+      "Secret to making range time count — don't trust the mat. Use The Perfect Divot to simulate real grass conditions. 3/32nds of an inch elevation. Your practice actually transfers. GolfMatsSuck.com.",
+      "Here's a trick the pros know — mat contact isn't real contact. The Perfect Divot fixes it by elevating your ball to grass height. 3/32nds of an inch. Honest practice starts here. Link in bio.",
+      "Simple hack for any range session. The Perfect Divot raises your ball 3/32nds of an inch — same as real turf. Suddenly your practice makes sense. Fits right in your bag. GolfMatsSuck.com."
+    ],
+    feel: [
+      "Here's how to get real feel at the range. The Perfect Divot elevates your ball 3/32nds of an inch so contact feels like grass, not rubber. Trust your hands again. Link in bio.",
+      "Tip for better contact feedback — use The Perfect Divot. It simulates real grass height so you actually feel your shots. 3/32nds of an inch makes all the difference. GolfMatsSuck.com.",
+      "Want that pure contact feeling at the range? The Perfect Divot is the secret. Elevates your ball to turf height — 3/32nds of an inch — for real feel on every shot. Link in bio.",
+      "Here's the hack for feeling your mishits at the range. The Perfect Divot lifts your ball 3/32nds of an inch. No more hidden fat shots. Real feedback, real feel. GolfMatsSuck.com.",
+      "Quick tip — if mat contact feels weird, it's because it is. The Perfect Divot brings back real turf feel. 3/32nds of an inch of honest feedback. Your irons will thank you. Link in bio."
+    ],
+    practice: [
+      "Here's how to make every range session count. The Perfect Divot creates real grass conditions on any mat. 3/32nds of an inch elevation. Practice that actually improves your game. GolfMatsSuck.com.",
+      "Tip for productive practice — stop trusting the mat. The Perfect Divot gives honest feedback by simulating real turf height. 3/32nds of an inch. Every shot tells the truth. Link in bio.",
+      "Want range sessions that transfer to the course? Use The Perfect Divot. It creates real grass conditions so your practice actually counts. 3/32nds of an inch. Simple upgrade. GolfMatsSuck.com.",
+      "Here's the secret to practice that works. The Perfect Divot simulates real turf — 3/32nds of an inch elevation — so you're building real skills, not mat skills. Link in bio.",
+      "Quick hack for better practice. The Perfect Divot turns any mat into real conditions. 3/32nds of an inch of grass feel. Your improvement just accelerated. GolfMatsSuck.com."
+    ],
+    portability: [
+      "Pro tip — bring your own practice fix. The Perfect Divot fits in your bag and turns any mat into grass conditions. 3/32nds of an inch. Take it anywhere. GolfMatsSuck.com.",
+      "Here's a hack for road golfers. The Perfect Divot travels with you. Weighs nothing, fixes any mat, gives you real feel. 3/32nds of an inch. Never settle for bad mats again. Link in bio.",
+      "Tip for any range you visit. The Perfect Divot fits in your bag pocket. Sets up in seconds. Real grass feel anywhere. 3/32nds of an inch of portable perfection. GolfMatsSuck.com.",
+      "Here's the move — throw The Perfect Divot in your bag. Now every range has real turf conditions. 3/32nds of an inch. Simple, portable, essential. Link in bio.",
+      "Quick hack for consistent practice anywhere. The Perfect Divot goes where you go. Any mat becomes grass. 3/32nds of an inch in your pocket. GolfMatsSuck.com."
+    ],
+    price: [
+      "Here's a cheap hack for better golf. Under $40, The Perfect Divot gives you real grass feel on any mat. 3/32nds of an inch. Best value upgrade available. GolfMatsSuck.com.",
+      "Tip for golfers on a budget. The Perfect Divot costs less than two sleeves of balls but upgrades every practice session. 3/32nds of an inch of value. Link in bio.",
+      "Here's how to improve without spending big. Under $40, The Perfect Divot turns any mat into real conditions. 3/32nds of an inch. Cheapest game changer in golf. GolfMatsSuck.com.",
+      "Budget tip — skip one round of drinks and get The Perfect Divot. Under $40 for pro-level practice conditions. 3/32nds of an inch. Easy choice. Link in bio.",
+      "Here's the secret to cheap improvement. The Perfect Divot — under $40 for real grass feel at any range. 3/32nds of an inch. Your wallet and game will thank you. GolfMatsSuck.com."
+    ]
+  },
+  bold: {
+    general: [
+      "Stop hitting off range mats without this. You're building bad habits with every swing. The Perfect Divot fixes the problem — elevates your ball 3/32nds of an inch for real grass contact. No more lies. GolfMatsSuck.com.",
+      "Never practice on a mat without The Perfect Divot. Seriously. It simulates real turf height so you get honest feedback. 3/32nds of an inch changes everything. Stop wasting time. Link in bio.",
+      "The Perfect Divot is the most important golf accessory you don't own. Real grass feel on any mat. 3/32nds of an inch. Your practice is worthless without it. GolfMatsSuck.com.",
+      "Fix your practice or keep getting worse. Range mats lie — The Perfect Divot tells the truth. 3/32nds of an inch of real turf conditions. Stop the madness. Link in bio.",
+      "Stop letting mats ruin your game. The Perfect Divot is the only way to practice properly at the range. 3/32nds of an inch. Real grass feel. Non-negotiable. GolfMatsSuck.com."
+    ],
+    feel: [
+      "Stop accepting that weird mat feel. It's ruining your swing. The Perfect Divot brings back real grass contact — 3/32nds of an inch. Your hands deserve truth. GolfMatsSuck.com.",
+      "Never hit another bouncy mat shot. The Perfect Divot eliminates that fake feel instantly. 3/32nds of an inch of real turf contact. Trust your feedback again. Link in bio.",
+      "The Perfect Divot is the best thing that ever happened to your contact feel. Real grass height on any mat. 3/32nds of an inch. Stop the rubber bounce forever. GolfMatsSuck.com.",
+      "Fix your contact feel today. The Perfect Divot simulates real turf — 3/32nds of an inch — so every shot feels like the course. No more mat garbage. Link in bio.",
+      "Stop tolerating bad feel. The Perfect Divot gives you pure grass contact anywhere. 3/32nds of an inch. Your irons deserve this. You deserve this. GolfMatsSuck.com."
+    ],
+    practice: [
+      "Stop wasting range sessions. Without The Perfect Divot, you're just building bad habits. Real grass conditions, 3/32nds of an inch. Practice that actually counts. GolfMatsSuck.com.",
+      "Every range session without The Perfect Divot is a waste. Mats hide your mistakes. This shows the truth. 3/32nds of an inch of honest practice. Link in bio.",
+      "The Perfect Divot will transform your practice overnight. Real turf conditions, real feedback, real improvement. 3/32nds of an inch. Stop messing around. GolfMatsSuck.com.",
+      "Never practice without this again. The Perfect Divot makes every shot count by simulating grass. 3/32nds of an inch. Your game depends on it. Link in bio.",
+      "Stop the insanity of practicing on mats without The Perfect Divot. Real grass feel, honest feedback. 3/32nds of an inch. Fix your practice now. GolfMatsSuck.com."
+    ],
+    portability: [
+      "Never go to a range without The Perfect Divot. Fits in your bag, fixes any mat. 3/32nds of an inch of real grass feel wherever you are. No excuses. GolfMatsSuck.com.",
+      "The Perfect Divot should be in every golf bag. Period. Portable, lightweight, essential. 3/32nds of an inch of grass feel on demand. Stop leaving without it. Link in bio.",
+      "Stop accepting whatever mat the range gives you. The Perfect Divot travels with you. Real conditions anywhere. 3/32nds of an inch in your pocket. GolfMatsSuck.com.",
+      "This belongs in your bag right now. The Perfect Divot — portable grass feel for any mat. 3/32nds of an inch. Never settle for garbage practice again. Link in bio.",
+      "The Perfect Divot is the most important thing in your bag after clubs. Portable real grass feel. 3/32nds of an inch. Stop practicing wrong. GolfMatsSuck.com."
+    ],
+    price: [
+      "Stop spending money on lessons when your mat is lying to you. The Perfect Divot is under $40 — fix the foundation first. 3/32nds of an inch. Best investment in golf. GolfMatsSuck.com.",
+      "Under $40 to fix your entire practice routine. The Perfect Divot is the cheapest game changer available. 3/32nds of an inch. Stop overthinking, just get it. Link in bio.",
+      "The Perfect Divot is the best money you'll spend on golf this year. Under $40 for real grass conditions. 3/32nds of an inch. Don't wait. GolfMatsSuck.com.",
+      "Stop wasting money on range balls you're mis-hitting. Invest $40 in The Perfect Divot. Real feedback, real improvement. 3/32nds of an inch. Link in bio.",
+      "For less than dinner out, The Perfect Divot fixes your practice forever. Under $40. 3/32nds of an inch of real grass feel. No brainer. GolfMatsSuck.com."
+    ]
+  }
+};
+
+function generateScripts() {
+    const hookType = document.getElementById('hookType').value;
+    const angle = document.getElementById('angle').value;
+    const results = document.getElementById('results');
+    const scriptList = document.getElementById('scriptList');
+    
+    const variations = scripts[hookType][angle];
+    
+    scriptList.innerHTML = variations.map((script, i) => `
+        <div class="script-card">
+            <div class="script-header">
+                <span class="script-number">VARIATION ${i + 1}</span>
+                <button class="btn btn-sm btn-outline btn-copy" onclick="copyScript(${i}, this)">Copy</button>
+            </div>
+            <div class="script-text">${script}</div>
+        </div>
+    `).join('');
+    
+    results.classList.add('show');
+    
+    window.generatedScripts = variations;
+}
+
+function copyScript(index, btn) {
+    navigator.clipboard.writeText(window.generatedScripts[index]);
+    btn.textContent = 'Copied!';
+    btn.classList.add('btn-copied');
+    setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('btn-copied');
+    }, 1500);
+}
+    </script>
+</body>
+</html>
