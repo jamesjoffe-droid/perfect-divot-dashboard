@@ -28,12 +28,15 @@ exports.handler = async (event) => {
       return { statusCode: 500, headers, body: JSON.stringify({ error: 'OpenAI API key not configured' }) };
     }
 
+    console.log('Downloading video from:', videoUrl.substring(0, 100));
+    
     const videoResponse = await fetch(videoUrl);
     if (!videoResponse.ok) {
-      throw new Error('Failed to download video');
+      return { statusCode: 500, headers, body: JSON.stringify({ error: `Video download failed: ${videoResponse.status}` }) };
     }
     
     const videoBuffer = await videoResponse.buffer();
+    console.log('Video size:', videoBuffer.length, 'bytes');
 
     const formData = new FormData();
     formData.append('file', videoBuffer, {
@@ -52,11 +55,12 @@ exports.handler = async (event) => {
       body: formData
     });
 
-    if (!whisperResponse.ok) {
-      throw new Error('Whisper API error');
-    }
-
     const result = await whisperResponse.json();
+    
+    if (!whisperResponse.ok) {
+      console.log('Whisper error:', JSON.stringify(result));
+      return { statusCode: 500, headers, body: JSON.stringify({ error: `Whisper API: ${result.error?.message || 'Unknown error'}` }) };
+    }
 
     return {
       statusCode: 200,
@@ -65,6 +69,7 @@ exports.handler = async (event) => {
     };
 
   } catch (error) {
+    console.log('Function error:', error.message);
     return {
       statusCode: 500,
       headers,
