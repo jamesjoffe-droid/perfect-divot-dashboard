@@ -3,732 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Perfect Divot | Content Analytics</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>The Perfect Divot - Content Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --deep-green: #1a2e1a;
-            --forest: #2d4a2d;
-            --fairway: #3d6b3d;
-            --gold: #c9a227;
-            --gold-light: #e8d48a;
-            --cream: #f5f2eb;
-            --white: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #5a5a5a;
-            --text-muted: #8a8a8a;
-            --shadow-sm: 0 2px 8px rgba(26,46,26,0.08);
-            --shadow-md: 0 4px 20px rgba(26,46,26,0.12);
-            --shadow-lg: 0 8px 40px rgba(26,46,26,0.16);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--cream) 0%, #e8e5de 100%);
-            min-height: 100vh;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.02;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .app {
-            position: relative;
-            z-index: 1;
-        }
-
-        header {
-            background: linear-gradient(180deg, var(--deep-green) 0%, var(--forest) 100%);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.25rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(201,162,39,0.3);
-        }
-
-        .logo svg {
-            width: 30px;
-            height: 30px;
-            fill: var(--deep-green);
-        }
-
-        .brand-text h1 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--white);
-            letter-spacing: -0.02em;
-        }
-
-        .brand-text span {
-            font-size: 0.7rem;
-            color: var(--gold-light);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            font-weight: 500;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gold-light);
-            font-size: 0.85rem;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .status-dot.error {
-            background: #f87171;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.1); }
-        }
-
-        .btn {
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.6rem 1.1rem;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold) 0%, #d4af37 100%);
-            color: var(--deep-green);
-            box-shadow: 0 2px 8px rgba(201,162,39,0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(201,162,39,0.4);
-        }
-
-        nav {
-            background: var(--forest);
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            gap: 0;
-        }
-
-        .tab {
-            padding: 0.9rem 1.5rem;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .tab:hover {
-            color: var(--white);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .tab.active {
-            color: var(--gold-light);
-            border-bottom-color: var(--gold);
-            background: rgba(255,255,255,0.05);
-        }
-
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 1.25rem 1.5rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0,0,0,0.04);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--gold) 0%, var(--gold-light) 100%);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            margin-bottom: 0.35rem;
-        }
-
-        .stat-value {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--deep-green);
-            line-height: 1.1;
-        }
-
-        .stat-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 0.2rem;
-        }
-
-        .panel {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0,0,0,0.04);
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 1.25rem 1.75rem;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .panel-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: var(--deep-green);
-        }
-
-        .btn-transcribe-all {
-            background: linear-gradient(135deg, var(--fairway) 0%, var(--forest) 100%);
-            color: var(--white);
-        }
-
-        .btn-transcribe-all:hover {
-            background: linear-gradient(135deg, var(--forest) 0%, var(--deep-green) 100%);
-        }
-
-        .video-list {
-            padding: 0;
-        }
-
-        .video-item {
-            padding: 1.25rem 1.75rem;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1.5rem;
-            align-items: start;
-            transition: background 0.2s ease;
-        }
-
-        .video-item:hover {
-            background: rgba(245,242,235,0.5);
-        }
-
-        .video-item:last-child {
-            border-bottom: none;
-        }
-
-        .video-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .video-hook {
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        .video-meta {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            flex-wrap: wrap;
-        }
-
-        .hook-tag {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.3rem 0.7rem;
-            border-radius: 100px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .hook-tag.shared-frustration { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #92400e; }
-        .hook-tag.question-hook { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1e40af; }
-        .hook-tag.bold-statement { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); color: #9d174d; }
-        .hook-tag.identity-callout { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; }
-        .hook-tag.quick-tip { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; }
-        .hook-tag.story-opener { background: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%); color: #9f1239; }
-        .hook-tag.other { background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); color: #374151; }
-
-        .video-stats {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .video-stat {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .video-stat svg {
-            width: 14px;
-            height: 14px;
-            opacity: 0.6;
-        }
-
-        .video-date {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
-        .video-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.4rem;
-        }
-
-        .btn-small {
-            font-size: 0.75rem;
-            padding: 0.45rem 0.9rem;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid var(--forest);
-            color: var(--forest);
-        }
-
-        .btn-outline:hover {
-            background: var(--forest);
-            color: var(--white);
-        }
-
-        .btn-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: none;
-            cursor: default;
-        }
-
-        .btn-failed {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .btn-failed:hover {
-            background: #fecaca;
-        }
-
-        .btn-loading {
-            background: #fef3c7;
-            color: #92400e;
-            cursor: wait;
-        }
-
-        .transcript-panel {
-            margin-top: 0.6rem;
-            padding: 1rem;
-            background: linear-gradient(135deg, rgba(245,242,235,0.8) 0%, rgba(232,229,222,0.8) 100%);
-            border-radius: 10px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .transcript-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 0.4rem;
-        }
-
-        .transcript-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .btn-copy {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            background: var(--white);
-            border: 1px solid rgba(0,0,0,0.1);
-            color: var(--text-secondary);
-        }
-
-        .btn-copy:hover {
-            background: var(--deep-green);
-            color: var(--white);
-            border-color: var(--deep-green);
-        }
-
-        .transcript-text {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.65;
-        }
-
-        /* Hook Analysis Tab */
-        .hook-analysis-grid {
-            padding: 1.25rem 1.75rem;
-        }
-
-        .hook-row {
-            display: grid;
-            grid-template-columns: 180px 1fr 100px 100px 100px;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
-            gap: 1rem;
-        }
-
-        .hook-row:last-child {
-            border-bottom: none;
-        }
-
-        .hook-row-header {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            font-weight: 600;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid rgba(0,0,0,0.08);
-        }
-
-        .hook-name {
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-        }
-
-        .hook-bar-container {
-            height: 6px;
-            background: rgba(0,0,0,0.06);
-            border-radius: 100px;
-            overflow: hidden;
-        }
-
-        .hook-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--forest) 0%, var(--gold) 100%);
-            border-radius: 100px;
-            transition: width 0.5s ease;
-        }
-
-        .hook-stat {
-            text-align: right;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .hook-stat.highlight {
-            font-weight: 700;
-            color: var(--gold);
-            font-size: 0.95rem;
-        }
-
-        /* Trends Tab */
-        .trends-container {
-            padding: 1.75rem;
-        }
-
-        .trend-chart {
-            height: 280px;
-            background: linear-gradient(180deg, rgba(245,242,235,0.5) 0%, transparent 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 1.5rem;
-            gap: 0.75rem;
-        }
-
-        .trend-bar-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.4rem;
-            flex: 1;
-        }
-
-        .trend-bar {
-            width: 100%;
-            max-width: 50px;
-            background: linear-gradient(180deg, var(--gold) 0%, var(--forest) 100%);
-            border-radius: 6px 6px 0 0;
-            transition: height 0.5s ease;
-        }
-
-        .trend-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        footer {
-            text-align: center;
-            padding: 1.75rem;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        footer a {
-            color: var(--gold);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem;
-            color: var(--text-muted);
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 0.6rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        @media (max-width: 1024px) {
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.5; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 48px; height: 48px; object-fit: contain; }
+        .logo-text { font-size: 20px; font-weight: 700; }
+        .logo-sub { font-size: 13px; color: #6b7280; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .status { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #6b7280; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; animation: pulse 1s infinite; }
+        .status-dot.loading { background: #f59e0b; }
+        .status-dot.error { background: #ef4444; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        .btn { background: #16a34a; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .btn:hover { background: #15803d; }
+        .btn:disabled { background: #9ca3af; cursor: not-allowed; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-outline { background: white; color: #374151; border: 1px solid #d1d5db; }
+        .btn-outline:hover { background: #f3f4f6; }
+        .tabs { display: flex; gap: 4px; background: white; padding: 4px; border-radius: 10px; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .tab { background: none; border: none; padding: 10px 20px; font-size: 14px; color: #6b7280; cursor: pointer; border-radius: 6px; font-weight: 500; }
+        .tab:hover { color: #1a1a1a; }
+        .tab.active { background: #16a34a; color: white; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; border-radius: 12px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 4px; }
+        .stat-value { font-size: 28px; font-weight: 700; color: #16a34a; }
+        .stat-value.text { font-size: 16px; }
+        .panel { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+        .panel-header { padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+        .panel-title { font-size: 16px; font-weight: 600; }
+        .video-list { padding: 0; }
+        .video-item { padding: 1rem 1.5rem; border-bottom: 1px solid #f3f4f6; }
+        .video-item:last-child { border-bottom: none; }
+        .video-item:hover { background: #f9fafb; }
+        .video-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+        .video-content { flex: 1; }
+        .video-hook { font-size: 15px; font-weight: 500; margin-bottom: 8px; color: #1a1a1a; }
+        .video-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .hook-tag { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .hook-tag.shared-frustration { background: #fef3c7; color: #92400e; }
+        .hook-tag.question-hook { background: #dbeafe; color: #1e40af; }
+        .hook-tag.bold-statement { background: #fce7f3; color: #9d174d; }
+        .hook-tag.identity-callout { background: #d1fae5; color: #065f46; }
+        .hook-tag.quick-tip { background: #e0e7ff; color: #3730a3; }
+        .hook-tag.story-opener { background: #ffe4e6; color: #9f1239; }
+        .hook-tag.other { background: #f3f4f6; color: #374151; }
+        .video-stats { display: flex; gap: 12px; font-size: 13px; color: #6b7280; }
+        .video-date { font-size: 12px; color: #9ca3af; }
+        .video-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+        .btn-success { background: #d1fae5; color: #065f46; border: none; cursor: default; }
+        .btn-failed { background: #fee2e2; color: #991b1b; }
+        .btn-loading { background: #fef3c7; color: #92400e; }
+        .transcript-box { margin-top: 12px; padding: 12px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb; }
+        .transcript-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .transcript-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; }
+        .transcript-text { font-size: 14px; color: #374151; line-height: 1.6; }
+        .hook-analysis { padding: 1.5rem; }
+        .hook-row { display: grid; grid-template-columns: 160px 1fr 80px 100px 100px; align-items: center; padding: 12px 0; border-bottom: 1px solid #f3f4f6; gap: 16px; }
+        .hook-row:last-child { border-bottom: none; }
+        .hook-row-header { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; border-bottom: 2px solid #e5e7eb; padding-bottom: 12px; }
+        .hook-name { font-weight: 600; font-size: 14px; }
+        .hook-bar-bg { height: 8px; background: #e5e7eb; border-radius: 100px; overflow: hidden; }
+        .hook-bar { height: 100%; background: linear-gradient(90deg, #16a34a, #22c55e); border-radius: 100px; }
+        .hook-stat { text-align: right; font-size: 14px; color: #374151; }
+        .hook-stat.highlight { font-weight: 700; color: #16a34a; }
+        .trends-container { padding: 1.5rem; }
+        .trend-chart { display: flex; align-items: flex-end; justify-content: space-around; height: 200px; gap: 8px; padding: 1rem; background: #f9fafb; border-radius: 8px; }
+        .trend-bar-wrapper { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+        .trend-bar { width: 100%; max-width: 40px; background: linear-gradient(180deg, #16a34a, #22c55e); border-radius: 4px 4px 0 0; }
+        .trend-label { font-size: 11px; color: #6b7280; }
+        .loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: #6b7280; }
+        .spinner { width: 20px; height: 20px; border: 2px solid #e5e7eb; border-top-color: #16a34a; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .empty-state { text-align: center; padding: 2rem; color: #6b7280; }
+        footer { text-align: center; padding: 2rem; color: #6b7280; font-size: 13px; }
+        footer a { color: #16a34a; text-decoration: none; font-weight: 600; }
+        @media (max-width: 900px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .hook-row { grid-template-columns: 1fr; gap: 0.4rem; }
+            .hook-row { grid-template-columns: 1fr; gap: 4px; }
             .hook-row-header { display: none; }
         }
-
-        @media (max-width: 640px) {
-            .header-content { flex-direction: column; gap: 1rem; text-align: center; }
+        @media (max-width: 600px) {
             .stats-grid { grid-template-columns: 1fr; }
-            .video-item { grid-template-columns: 1fr; }
-            .video-actions { flex-direction: row; justify-content: flex-start; }
-            main { padding: 1rem; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .container { padding: 1rem; }
         }
     </style>
 </head>
 <body>
-    <div class="app">
-        <header>
-            <div class="header-content">
-                <div class="brand">
-                    <div class="logo">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z"/>
-                        </svg>
-                    </div>
-                    <div class="brand-text">
-                        <h1>The Perfect Divot</h1>
-                        <span>Content Analytics</span>
-                    </div>
-                </div>
-                <div class="header-actions">
-                    <div class="status">
-                        <div class="status-dot" id="statusDot"></div>
-                        <span id="statusText">Connecting...</span>
-                    </div>
-                    <button class="btn btn-primary" onclick="loadVideos()">Refresh</button>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAF0WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoTWFjaW50b3NoKSIgeG1wOkNyZWF0ZURhdGU9IjIwMjUtMDItMjVUMTQ6NTM6NDctMDU6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDI1LTAyLTI1VDE1OjA0OjI2LTA1OjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDI1LTAyLTI1VDE1OjA0OjI2LTA1OjAwIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjQ3YjA0YjczLWFkMGQtNDc4Zi04N2RlLTdiMjMwZWY5YTdmOSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0N2IwNGI3My1hZDBkLTQ3OGYtODdkZS03YjIzMGVmOWE3ZjkiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo0N2IwNGI3My1hZDBkLTQ3OGYtODdkZS03YjIzMGVmOWE3ZjkiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjQ3YjA0YjczLWFkMGQtNDc4Zi04N2RlLTdiMjMwZWY5YTdmOSIgc3RFdnQ6d2hlbj0iMjAyNS0wMi0yNVQxNDo1Mzo0Ny0wNTowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEBQoAIAAsAAAAAGAAYACFBAIEhIKExMLEREJE5OLkJCIkpKKk1NLUdHZ0FBIUVFZUtLK09PL0NDI0lJKU7OrsTE5MLC4stLa0/Pr8PD48DAoMjIqMzMrMTEpM5ObkJCYkrKqs3NrcfH58HB4cXF5cvL68/P78NDY0nJqcBAYEhIaExMbEREZE5ObkpKak1NbUfHp8FBYUXFpcvLq89Pb0NDo0lJaU7O7sVFJULC4s/P78PEI8DA4MjI6MzM7MTExM6OroAAAAAAAAAAAAAAAABv9AkHBILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LB4TC6bz+i0es1uu9/wuHxOr9vv+Lx+z+/7/4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAMKHEiwoMGDCBMqXMiwocOHECNKnEixosWLGDNq3Mixo8ePIEOKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp0+dQYMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOLH0++vPnz6NOrX8++vfv38OPLn0+/vv37+PPr38+/v///AAYo4IAEFmjggQgmqOCCDDbo4IMQRijhhBRWaOGFGGao4YYcdujhhyCGKOKIJJZo4okopqjiiiy26OKLMMYo44w01mjjjTjmqOOOPPbo449ABinkkEQWaeSRSCap5JJMNunkk1BGKeWUVFZp5ZVYZqnlllx26eWXYIYp5phklmnmmWimqeaabLbp5ptwxinnnHTWaeedeOap55589markup55qKLMnropJRWaumlmGaq6aacdurpp6CGKuqopJZq6qmopqrqqqy26uqrsMYq66y01mrrrbjmquuuvPbq66/ABivssMQWa+yxyCar7LLMNuvss9BGK+201FZr7bXYZqvtttx26+234IYr7rjklmvuueimq+667Lbr7rvwxivvvPTWa++9+Oar77789uvvvwAHLPDABBds8MEIJ6zwwgw37PDDEEcs8cQUV2zxxRhnrPHGHHfs8ccghyzyyCSXbPLJKKes8sost+zyyzDHLPPMNNds880456zzzjz37PPPQAct9NBEF2300UgnrfTSTDft9NNQRy311FRXbfXVWGet9dZcd+3112CHLfbYZJdt9tlop6322my37fbbcMct99x012333XjnrffefPft99+ABy744IQXbvjhiCeu+OKMNX754gZAgA8ACJBg7+WMGfAA5pljDgDnnGsOgOegEwD66JmLTnrpkJsOuuacd+455J1zvrnnqKPOOuuwq46767S7Lrvtq9fOu+u5v857767/3nvwoxcvfOzEsz687MjHrjzwzP8+PfPN9048Az74wL3xzQ8PPPbcO8/97d8rv/3z4A9Pffjaly/99OmPv3776I/v/vvVv/879/mTH/7yzd9///rI2x//+vqTn/7+Bz/7JRB+71uf/ginPvEJ0IAHZJ/6tge/BP7vftjzHgK/d78A1i+B/WNg/+xHPQHC74P0I6ABIahADBJQgga84ANDuD/1hbCDBWzfCDkIQw/e8IQ67KELhRjEFhaxhSysYQtteEQmMpGGSYziDae4xCQ28YpV1OIVkXjELmbxiGPU4hXBqEUvdjGMUpzhFcmIRS66kYtrFCMa23hGMoaxjWpkoxrTeMYzqtGOarwjFdEYxzjaUY901KMbz/hGPbqxj4Hkox4B+cZADjKRhVSkIBVJSEYi8pF+vKQeCdlIR0YSkpZspCIpqUhK8rGRiOykJhMpSktKkpKgBCUpSwlKUa6ylHa0JCFHacpU0nKTqAxlLFNJy1eeMpWafCUpb3nLW5LSlLYkZitxqctd1pKXwvRlK5PJy14qU5jLtGUzoanMZzKTmNM85jCpqc1gYtOa3URmN6c5TnJKc5s7hGY2p6nNdGYznersZjfd+U1vbhOd8ZynOv85T3S+s57xnKc++TlOcJKTAAAh+QQFCgAgACw0ADUAKgAnAAAI/wABCBxIsKDBgwgTKlzIsKFDgwIeCiQQ8eCAhBcnJiQAsaLDiRIzTrRYQKPGjgU7SgRpMSDEjhtFhvRIQCVBkClPlhRZkuXKmSJlrqxJEyRLlThdSi0JtSNVqi6xIk2p9enRm0Kvbs2JtWxXsGO9hl1r9uzYtV/Prv061a1bpmlX0rVLl+7ct3RB6g28Vi/hwGjpAi5ceK7gunjl7j2MF7Haw4gb393bt3JlyZAv+83sGfPmzZQza37sOXLk0ZBHS/Ys2LRk1addlz5dGjbq16w3z0aNe/Xt27VT37adWrZt3K55B489G7Xu1Mx5Gyc+OzXvzbeXN28+fLl06Mih/zevPl1679vOqWu/fn37+fHjr5Nfj/56+uvh38tHrr5+9/jx+ecfffoB6N+ACPpnIILwLcjgfQYCKGGBFBpo34AQahghhxFeOCF9HWp44YAYUrjhhxSeyCGGJ3a4oYcatliiiSdWaCKJN+Y4Y484aqjijjayeKSMNqYIpIs7IvmikD8auSSPRw5Z5JNFBqljkVUWmaKPPWLJo5VKdlnmk2deiSSVVHL5ZJZvZommkF9KKSWXZ7IJZ5l0nmmnmV9O2SadYoZppp5hzinnnWjmGSiee8opKKBXInqooFKm+Waibg4aaZ+VKhpooV8y+mebdvrJaJ6hQvqmpH5OGmqkpf+2iqmolLYK6aujxgorrI2WKmmiqlKaKq269trqrLLm6uuqvS4K7K2u2krsq6X2mqyzvhKbbK/IMsvspq0yWy21qxJLKrTTIiuqqM5Ki22zzG7LLbfPdiuuuOsOi2654p47brfpikuut+eSu2684847rrryyruuuvu+W++u8eq7L8ACs/tur+0GzO++9qrrL7v5CkwwwhMfPHC+9RIs8cMHY1zxwRMbjPDBAV9c8cUdX0zxwSeLLPLEKVvcscomayxxzCGjnPK8LuMcss064wuzywizfDPMOdessM4zG92z0TEnjfPQSht99M03a020zlIDLXXPVU9t9NBEo0w12FQXjfVN1VWDHbTUVjfNtdphex1012qPHXbbaH/d9dpyqy131mCXjTbeYK89N9x95/032oZLzffba/ddON6IHx7544YrPvnij8MN+d+OE9744YuvPfnnlZM+euSgpz455KN7vnrlrVv+OeaVp6755Z2TDnrtkdOuuuyZ0x687LqfLnvruZ/+eu6v6z4587wj3/vss/f+vO++Ty8877k3H77w21dv/fXRn58+9dhrv3v75V8vPvfiq198+dn/bv7574f/fvzfy29+/e7PD3/8/+t///fx1z8A7s9/AwygAO/3v/0RMIA7G6ACB6jAAjJwgRI8YAAZ+L8GHnCDDMwgBw9YwQiKcIQkNCEJF6hCFKLwhCVU4QldSMIKdlCDDJRgBjPIwRGmkIUxdKH3AAQAIfkEBQoAIAAsNAAlACoAMQAACP8AAQgcSLCgwYMIEypcyLChw4cGHgokEPHggIQXJyYkALGiw4kSM060WECjxo4FO0oEaTEgxI4bRYb0SEAlQZApT5YUWZLlyplcQBoMabOlyZYsX9pU6dKl0J1Md/r0uJNnVJ4tdwI9KRXq06RTmy41urXq16BBbwadihVsV7Bgt16FWtZt1bRW3bpFa1fs3Ldax6rl2xeuXr9u5dolTFhu4bmCEYcVPPjv4Ld+DVtuXLjyXMmRC1+O/HlxZdGYR3smPVp1Ztalb58uLbtyaNalWbte3Xq0bdKzVefOrbp37ty5dxO/bbw3bdy1kfPOfby2ct7Km+tm3nx57ue7kT//V24d+m/r2bE/x87d+3TowKNvv/79vPjz5rtzx/5d/fnx8Nuvhw8/P3v14s0T6OCDDQbnYIIHMsigghR+CCGEAwYI4X0YShjhhRVSWKCF/zU44oYkYujhhyWW+OGF/qHIYowxkkgjjTJGh+KGOeIIo47/8WhiijtmGOSPOhrZ4pA+Knmij0rOmCSSSy65o5RJMknlkkoOKWWTV0KJJZlVtqjlmU9ayaWXYF6pJY9e7himmmGymGSaVbrpZplxzqljnWXO+SaddeqZZ5x59qkmonwCSaiafO5J6Z+G1nnooI4uauejkO5paKRqUoppoo5O6minkFY66KaWLhrqppxiOv+qp5uK2uqroIL66aevnpqqrKa2ymuprDbqa62w6hprr8ICO6uqxfp6rK/B7oqsr8sCuyyoyyZbrLPJRmustchOS6uy0Sb7bLPQUsvtttJmmy241YprbbXgjhttuN6auy2435Z77rnspgsvuu2+66279cIbb73w5ovvvvH6yy+//9rbb8D5DqxuwAHru2+9AyNML8ELM9xwvAwbzO/EBkOMr8UVWzwxxRxXDPHBHmvs78cVL/wxwCKXrPHJ+p7s8cko94vyyyKTPPLJIpds8sogB42yxC6XXHPOJ+t88s40vyyzxzjHrHPOPmv8Mtw07yx01DtPjXPRT/PMNNZV93z10V5PbfXVhxe9ddU7D/310GIDLfbYRpct9tZOey021G5nbXXdaNtNd99m31023XBHfnbgeTNuOOFhC0463YtbfTbijPct+eGUT6744JNnrvnmnHvu+eaNQy46409fvvjgpc8NeuGmd766364//rrplONuOuyPp5677cDLvvvotI/ee/LB6+476cYT33zomv++dujEb2+87sQPr/zp3j/fOfTJf0+8+LyTj/714of//PnUs/++9MhHDz/88x+/+u/7b377e5/77te//PFPffLbXwDzB8AA8s+AC4TfAQGYwAYCkIEBNKABAYhABQLQgRiMoAQVqMANZpCCCvygBD3owAaG0IId1CAJC0hBD3IwgypUYQlbuMMNvnCHIgzhCE1IwxvKEIUnXCIOTzhEG/JwhzDEIQqFyEMiBlGIQfShFInYRCQuMYlJlOIPq6hELzJxijy0Ig7BCMUxQpGLYyxjD8toRjKS0YxezGINx/hGNGLxjG48oxmz+EY0AvKOefziH8VYRjQOko1x7OMdy2jHLwaSjYdkIxoRWcg7zjGPj8yjI/tYyS0W8o9ljCQfK4nIJyryk3dkJB0zCck8qvKSpHwlLFOJyUl2cpOizCQsT1nKS/byk6pEJSNb2cpYenKWrZwlKnlJylji0pS3NCYuZ1nLXvJSlrBE5imBeUtfKlOZyiwlNYOZy2fq8pjMNGYypXnNXEpTmrq0JjS/qUxsIvObzxznOLfJTG6uk5vLVOc7x3nOeKpznPQcZzzlic5xpvOf7oTnNPMZz3zO85/u1KdA72lQgx7UoPREqED/GdGBMjSiC7VnRBdKUIZKFKMCPSlEQZrRhib0ow8lKUpRulKU2tOlBIWpPSsqUozCNKQoheg7fUpSko70pTFlaU1hKlOb0pSlMw2qTXsKz6QCVacrValSq8rUnioVpUYdKkuPSlWjLhWqWZXqVIFaVamWtKY27epQW0rVmpI1rGbd6lNBulabwtSmNh0rWNnKVamuFa1xJStZU/rWupY1qU1ta1DjGte7yjWuZZXrWvvqVMC2dbCAlaxlLataz7pXwu6VsoeF7GIvq9jJOnaygu2rZTuLWMoGdrSbHW1nSdtZ0pr2tJZVbWdHO9rXwja1ty1tbTN72912dreT5a1rW8vazdrWt8ANLW6Ha1njOje4yo1tcjdbXOb+FrrRXS51m6vd7VI3utjdrnOpy93y4pW8bE2venPL3fCe167r/a18yYve9baXvNF9r3LNi1/0rte/8LXudb37X/D2N74Eta+A2Wtg+P6XwPcNcH/vC+D2yhe+B55ve/vrXgHX17/0zS+FHfxfCx8Yw+ItsHv9a+AR/9fCIy5xfysM4PtmeMMuLnGIMSxh/+rYwyRucYVZ3OEXs9jDJ07xfKN8YxIfeL86trGNdVziGxNZyCMWsotRPGIoWxjEJY5yjcW8ZCbzGMU7FrKVfQxlFPv4ymT+8patvOUs+1jMXYYymp98ZDPLuMw8TvKZ49xlMX+5zE6WM4/fTOU35zzOMb7znXcc5znjGdB6frOct9xnRBeazmZ+sp8h3ec/WxrShMbznvOsaEhHOs+e/jOiFw3oRM/ZzXYG9aLxzOlNV9rUgkZ1o1E9Zlab2taj5vSoRX3rXIO607Fuda4hvWtO+7rXqN5yXTtd62AP29DERvaph61oXjMb2Lqm9aORXWxmN1vYs7Y2qZv9bF8Pu9rPBjazj53tbX+b2ctmNra/7W1wjzvbwwZ3sq8N7XB3W93hFve1tc3ucVv73Ng2t7fXre1y5zvc9J43u++NbmOH297ltrewA/1ufbt73/3ud78L/u+C23vgAiduaU07cXorvOEQpzfFK97wfUOc4gpPeMbvzXGIE3xCACH5BAUKACAALDQAKQAqACkAAAj/AAEIHEiwoMGDCBMqXMiwocOHBh4KJBDx4ICEFycmJACxosOJEjNOtFhAo8aOBTtKBGkxIMSOG0WG9EhAJUGQKU+WFFmS5cqZXEAaDGmzpcmWLF/aVOnSpdCdTHf69LiTZ1SeKW3iBGpS6dSjVYcKBSm0KVWsQ61SrTrV6dasSp1mtTo2rNKiZIWKVSuXbE62VLW+7TrX7tq8b+2+hVu3bNm/eAsTvtt38N+4eBUPnit38mHKlT2Xnqy4cubKmfdW3gx68+DGp1lrLv0YM+nVlkPDJo1bNenXs2GrRg1ct+zSwkmTjn0cOGzkynHDDr68eHTn0YdbRz6duvbs2bOz/999u3h25de1N/dNHHny69vPk0/v/fz48t3bny+/Pr3+8/Hpt3/vnX7yHUjgev+5F2CCAb5HIILy2dfgfQs26OCE/h1o4IDuFTjhhRZeKCF/EkZ4YYYh+ldhhhOOKOKJJqL4oIYndkjjhhK6SGKNJc4YI40n0igkjjjKKOSNR9p4pJJI7gjkkkUGieOSTfroZJVGRtnklFn6mOSPU3ZZJZdB9lhml10CmWabZaI5JpVdvokmmnH6aCefeaq5pZZs0mmmnGMeeuahiCqK55uN0okmoXYCSuimjlbqqKePaqppqI9SymmopjI66aeeYlpqqp6aymqopqLKqqiudoorp/+wpmqrqrra+qquuN5qK6jA7jpsr8UOu2uxw/raLK7PMjusr6sGe22v0U5L67bTZkvttdl2Wy2z0WK7q7bNikutueGKS2656k57LbrllutuuuG2q+689JpbL7znujuvvPwCzK++AAv8Lr4E11tvw/4OLG/B9w5s8MEKNyxvww1fPLHCE+t78cYdOwwxxBaLbDHHIydMssEne5yyyC5/7HLLKmcsMsohk3zxySXPrHLNMNOcs8cz79wzyzHznLPPHw9NM88zB6100TgnDfTPUhcNM9JIM5311kJvTXPSYKs8dtBfR+110WODnTbbZLeddNllw10233q/vXffeA9+9tp2x6211X/rzXjfhv99tt+IG3733Zu3jHfdkE++OOON28055ZVL3rjmiMv9ueGAQ5555JJ3LnnbdJcud+Wqb0665a2r7nnqprs+uur+ok7476v/O3vsuH+e+uS45/676cQH7zvwsb/uO+1hHw+887gvX/ruzAsffe/Ob4+89MyHf33y3nNPvfi6H18++dhTfz308pvvvfrl6y+/7vPbr/3w+m/vevv0o88AAQCwBIAEOAgAIfkEBQoAIAAsMAApAC4AKQAACP8AAQgcSLCgwYMIEypcyLChw4cQIwa4iLCgR4IGMhqsOBEBwo4MEYiEeNFhyIIjEYI8iTAjxI0rR4oEqZLhSAIVZYZ0OXAjwZcxZX7cGfPmTJ0qfb4E6TPoQ5swjxJ1ipKo06VJoz5tilWkUadInUKN+hQr1KlcTTLlylWrVq5lq5Y1i1Yt27FouXbdWxcuXrR185o9O3fv275x5xqO+7cuYMCNBQcG/HiuYsOOFT+WfHhy4st5IcNtzNiy5cN/D4OmHBnzZc2nRXcuPdrx5synTaM+zRm2bNSpO5dGvbp14NatZeO2bdv3bd/Ag9f2rdr3ceHEbxc//rw48+jRn0v/n35dur/g0bFfVw49evHo2ck7p24ee3Xz68+fhw9fvn39+fH7B4COACrowYMBLsifgQJKOCGFCC4oIYYHNphhhBFuiKGHIYooIoclejgiiSeSCKKKJIJoYYsuxthijCzCWGKMOc54oo07/ujijkHKeCOOLNaoY4o8HjmkjkP66OKQTC7pJJE+/jhklE5CeSSWWWLJ5JJSatmklFl2yaWUT2ap5ZVPminmk2qG6eWYZSqJpplZronml2quaeaYbbb5ppdyxilnm3bm6Wadc66JZp9r/oknnn7aWWiZhd5p5qFwzomonYvqySeffQJ656CLJppoo4sm6uiigl5qKaCSaoopoJ5m/4pqpJ56yqmilGJaaailsoqoq5tyimqrr8La6qmuzqprrbe2imutuvoKrKy8+ioss7jm6isAQ0rLq7PNQnuss85SW+yv2E6r7bbaWisttt9GO663wYpLLrnghnuvuuWiG26447or7rrpsssut/W2e269++J7L7/72uuvugAHDK+8BfNL8MACA7zwwA43nK/DAD/cMLcRS8zwxRd//DDGEV+MMcUFU2xxwxyHLPLFI2dM8sgnk/xxxScLfPLJH78M8cspq7zyzC3D/LLNM9dMtMkv22zz0DnnfDPSNTPNdM5RGy310E1DXTTXU+v8dNddh7000WKPrfXYYXtNttRrF/9ttddWx8123mznfXbcdc899tx3F87333y/DXjfhPsNOOCKF374z5DPTTjadxNet+Jry5044Y8Trjfjbj8++d2YL6455XZPrvnnoH8uOuWkW+556WN3Xjnbl5NeOeSpc/665KKT/vnonKf+ue2N6y576La/nvntp7sOPO26F9/68Lc77/rwvzPf+e26Gy8959Pz3vv1zXefffe+h5/99NKH73340Gd/vvrnT69+++uHf/3z8sPfPvjU5y8//vGPf+37H/36NzwA3q+ABERg/dQXQQQmUIESXOACH9hACE5wghN8YAQv2EEONvCBCqzgBEF4QRA6kIEWHCEJJahCFl5Qhhv/pKANbdjAFOLQhDWs4QxBqEMIInCGOkRhEH2YxBj2EIc8ZKIRjUhELBJxhzcU4hGhSMQjJlGIU5yiFJEYxShS0YdSfCIXu3hFJmKxiWL0YhbDWEYgflGKatQhGt1IRi7G8Yxm5GIc27jEOpLRjHaMoxz7iEQ++nGPd4QjINUoyEDWcZCHNGQiG4lISjYSkoyM5CEhiUlIKlKSlqzkJjUJyU6OkpOhZKQmObnKR4rylKl8JSpV2UpXhnKWrqQlLW/pSlvispS67GUwfenLWfaymL4MJjKPGcxhElOYlzzmL2e5TGIms5nMlOY0d8lNXi6zldac5jajmUlwivOayMQmOcmp/81zWjOd22TnN9M5z3e2E5zunCY59ylNeaoTkfsMaDrROdBr/pOg83ToP8V5zoYuFKEQfedDAWrQiupToQy1KEUrKlGKZjSgHMVoRDf6TY+GNKIkDSlIOWpSk6aUpRWVqEZT6lKXvlSmNYWpS1+6UpLadKUsrelPTXrTnub0p/I06k+L+s+d2rSkRm3qUY9KU6dW9adMBapVrdpVrAbVqFtN6Vu3SlSxanWsRz3rWddaVrWitaxpXatZ7XpWst6VrEK961/xGli8jlWvfjWsXw/717y+la6BTWxaG5vYxyKWso+FrGQfO1nITnayk71sZjEL2cpm9rGRHW1mL1va0/+2drWsne1qN/vZ2pZ2tq/drWhzm9vcuva3tqUtc4Fr3N46N7rM/S1voXta3Wa2u9jN7XarW1ztVje51gWvdLsb3vEqV7y6Ja97zdtd6HI3veQd73dFG976eve64s2ve+Vr3+yKl7n+ne95xTte/5I3u/5tL4DPO+ACm1e/BL4vfwk8YPsqmL4ANu+CEZzfBTf4vA+Ob4IjfOAJQxjAGq7wh+kr4ANPGMMbhnCEUQzhCpOYwigecIRX3GAOR5jGKrYxi01cYxPLOMYw1nGKTXxiGstYx0IuMJJ1DOIi+xjJQk5yjqdMYymrWMNYTrKPrQzl/DKZyy9+Mo95bOUxK7n/yWY+spixnOYyu/nKb47ym6EMZzif2c5YHjOfpxznNNe5z3xGs6D/nOdDLzrRg/bznPe8ZUgX+s6OPvSkK21oTCN6z4TudJ4F3edP8xnUoiZ0qQF9ak9PmtSjNnWmVW1qVJP61aBGdKpnDetPB1rWqv5zq32d61PbWs+2JjWwSy3sXBP72Kw+NrGVfWxfK5vZxX62sYVda24nm9iy/jWxnS3uZ5f71+dWN7upDe1ud5va4aY2uo09bm67u9vnxra80y3veGtb3/vGd7f93W933xvg9Sa3u8M9bIIz/N4HPzjCC97vh8ub4BUPuMX5nfFvJ1ziBPc3wTdO8Ipz/OMQL/m/Mw7yiJuc4w4v+cJVPnKWT5zkLz85y2Pu8Y6DXOYXV7nIee7yjJdc5RBXucqFXnOhs1zmHjf6xo/+c5tjXOlCF7rNfX5xj88c5V5/+NGnnvWVt/zkPu+6x2fO9ZR7vexhf/nXu452m/e86mbXetDLnnevU/3tYn963e8ed8ALHu5t9zvLrx74wce96HF/e+AFb/fC3/3xN/c7ywt/eMovfu9/j7TgJ194uk8+85qH/OYRH/rTj37zpT883BXv99ObHvedx/zpCw8AADs=" class="logo-img" alt="The Perfect Divot">
+                <div>
+                    <div class="logo-text">The Perfect Divot</div>
+                    <div class="logo-sub">Content Analytics Dashboard</div>
                 </div>
             </div>
-            <nav>
-                <div class="nav-content">
-                    <div class="tab active" data-tab="videos">All Videos</div>
-                    <div class="tab" data-tab="analysis">Hook Analysis</div>
-                    <div class="tab" data-tab="trends">Trends</div>
+            <div class="header-right">
+                <div class="status">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Connecting...</span>
                 </div>
-            </nav>
-        </header>
+                <button class="btn" onclick="loadVideos()">Refresh</button>
+            </div>
+        </div>
 
-        <main>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Videos</div>
-                    <div class="stat-value" id="totalVideos">—</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Total Reach</div>
-                    <div class="stat-value" id="totalReach">—</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Transcribed</div>
-                    <div class="stat-value" id="transcribedCount">—</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Top Hook Type</div>
-                    <div class="stat-value" id="topHookType" style="font-size: 1.1rem;">—</div>
-                </div>
-            </div>
+        <div class="tabs">
+            <button class="tab active" data-tab="videos">All Videos</button>
+            <button class="tab" data-tab="analysis">Hook Analysis</button>
+            <button class="tab" data-tab="trends">Trends</button>
+        </div>
 
-            <!-- Videos Tab -->
-            <div class="tab-content active" id="videos-tab">
-                <div class="panel">
-                    <div class="panel-header">
-                        <h2 class="panel-title">Recent Videos</h2>
-                        <button class="btn btn-transcribe-all" onclick="transcribeAll()">Transcribe All New</button>
-                    </div>
-                    <div class="video-list" id="videoList">
-                        <div class="loading">
-                            <div class="spinner"></div>
-                            Loading videos...
-                        </div>
-                    </div>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Videos</div>
+                <div class="stat-value" id="totalVideos">—</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Reach</div>
+                <div class="stat-value" id="totalReach">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Transcribed</div>
+                <div class="stat-value" id="transcribedCount">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Top Hook Type</div>
+                <div class="stat-value text" id="topHookType">—</div>
+            </div>
+        </div>
 
-            <!-- Hook Analysis Tab -->
-            <div class="tab-content" id="analysis-tab">
-                <div class="panel">
-                    <div class="panel-header">
-                        <h2 class="panel-title">Hook Performance by Type</h2>
-                    </div>
-                    <div class="hook-analysis-grid" id="hookAnalysis">
-                        <div class="loading">
-                            <div class="spinner"></div>
-                            Analyzing hooks...
-                        </div>
-                    </div>
+        <div class="tab-content active" id="videos-tab">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Recent Videos</h2>
+                    <button class="btn" onclick="transcribeAll()">Transcribe All New</button>
+                </div>
+                <div class="video-list" id="videoList">
+                    <div class="loading"><div class="spinner"></div>Loading videos...</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Trends Tab -->
-            <div class="tab-content" id="trends-tab">
-                <div class="panel">
-                    <div class="panel-header">
-                        <h2 class="panel-title">Weekly Reach Trend</h2>
-                    </div>
-                    <div class="trends-container">
-                        <div class="trend-chart" id="trendChart">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                Loading trends...
-                            </div>
-                        </div>
+        <div class="tab-content" id="analysis-tab">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Hook Performance by Type (from transcripts)</h2>
+                </div>
+                <div class="hook-analysis" id="hookAnalysis">
+                    <div class="loading"><div class="spinner"></div>Analyzing hooks...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="trends-tab">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Weekly Reach Trend</h2>
+                </div>
+                <div class="trends-container">
+                    <div class="trend-chart" id="trendChart">
+                        <div class="loading"><div class="spinner"></div>Loading trends...</div>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
 
         <footer>
             <a href="https://golfmatssuck.com" target="_blank">GolfMatsSuck.com</a> · Powered by Instagram API + Whisper AI
@@ -743,7 +191,6 @@
         let videos = [];
         let transcripts = JSON.parse(localStorage.getItem('perfectDivotTranscripts') || '{}');
 
-        // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -775,24 +222,22 @@
         }
 
         function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
         async function loadVideos() {
             document.getElementById('statusText').textContent = 'Loading...';
+            document.getElementById('statusDot').className = 'status-dot loading';
             
             try {
                 const response = await fetch(
                     `https://graph.facebook.com/${API_VERSION}/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,media_type,timestamp,like_count,comments_count,media_url&limit=50&access_token=${ACCESS_TOKEN}`
                 );
                 const data = await response.json();
-
                 if (data.error) throw new Error(data.error.message);
 
                 videos = data.data.filter(v => v.media_type === 'VIDEO' || v.media_type === 'REEL');
 
-                // Fetch reach for each video
                 for (let video of videos) {
                     try {
                         const insightsResponse = await fetch(
@@ -802,46 +247,31 @@
                         if (insightsData.data && insightsData.data[0]) {
                             video.reach = insightsData.data[0].values[0].value;
                         }
-                    } catch (e) {
-                        video.reach = 0;
-                    }
+                    } catch (e) { video.reach = 0; }
                 }
 
-                updateStatus(true);
+                document.getElementById('statusDot').className = 'status-dot';
+                document.getElementById('statusText').textContent = 'Connected · ' + new Date().toLocaleTimeString();
+                
                 renderVideos();
                 renderStats();
                 renderHookAnalysis();
                 renderTrends();
 
             } catch (error) {
-                console.error('Error:', error);
-                updateStatus(false);
+                document.getElementById('statusDot').className = 'status-dot error';
+                document.getElementById('statusText').textContent = 'Error';
                 document.getElementById('videoList').innerHTML = `<div class="loading">Error: ${error.message}</div>`;
-            }
-        }
-
-        function updateStatus(connected) {
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            if (connected) {
-                dot.classList.remove('error');
-                text.textContent = 'Connected · ' + new Date().toLocaleTimeString();
-            } else {
-                dot.classList.add('error');
-                text.textContent = 'Connection Error';
             }
         }
 
         function renderStats() {
             document.getElementById('totalVideos').textContent = videos.length;
-            
-            const totalReach = videos.reduce((sum, v) => sum + (v.reach || 0), 0);
-            document.getElementById('totalReach').textContent = formatNumber(totalReach);
+            document.getElementById('totalReach').textContent = formatNumber(videos.reduce((sum, v) => sum + (v.reach || 0), 0));
             
             const transcribedCount = videos.filter(v => transcripts[v.id]).length;
             document.getElementById('transcribedCount').textContent = `${transcribedCount}/${videos.length}`;
             
-            // Only calculate top hook type from TRANSCRIBED videos
             const transcribedVideos = videos.filter(v => transcripts[v.id]);
             const hookCounts = {};
             transcribedVideos.forEach(v => {
@@ -854,7 +284,6 @@
 
         function renderVideos() {
             const container = document.getElementById('videoList');
-            
             if (videos.length === 0) {
                 container.innerHTML = '<div class="loading">No videos found</div>';
                 return;
@@ -862,70 +291,56 @@
 
             container.innerHTML = videos.map(video => {
                 const hasTranscript = !!transcripts[video.id];
-                const caption = video.caption || '';
-                // Only use transcript for hook - caption is irrelevant
                 const hookText = hasTranscript ? transcripts[video.id].split('.')[0] : null;
                 const hookType = hasTranscript ? classifyHook(hookText) : null;
                 const hookClass = hasTranscript ? getHookTagClass(hookType) : '';
 
                 return `
                     <div class="video-item">
-                        <div class="video-content">
-                            <div class="video-hook">${hasTranscript 
-                                ? `"${hookText.substring(0, 100)}${hookText.length > 100 ? '...' : ''}"` 
-                                : `<span style="color: var(--text-muted); font-style: italic;">Awaiting transcript...</span>`
-                            }</div>
-                            <div class="video-meta">
-                                ${hasTranscript 
-                                    ? `<span class="hook-tag ${hookClass}">${hookType}</span>`
-                                    : `<span class="hook-tag other">Not analyzed</span>`
-                                }
-                                <div class="video-stats">
-                                    <span class="video-stat">
-                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                                        ${formatNumber(video.reach || 0)}
-                                    </span>
-                                    <span class="video-stat">
-                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                        ${video.like_count || 0}
-                                    </span>
-                                    <span class="video-stat">
-                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6h-2V4c0-1.1-.9-2-2-2H7C5.9 2 5 2.9 5 4v2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-4-2v2H7V4h10zm4 16H3V8h18v12z"/></svg>
-                                        ${video.comments_count || 0}
-                                    </span>
+                        <div class="video-row">
+                            <div class="video-content">
+                                <div class="video-hook">${hasTranscript 
+                                    ? `"${hookText.substring(0, 100)}${hookText.length > 100 ? '...' : ''}"` 
+                                    : `<span style="color: #9ca3af; font-style: italic;">Awaiting transcript...</span>`
+                                }</div>
+                                <div class="video-meta">
+                                    ${hasTranscript 
+                                        ? `<span class="hook-tag ${hookClass}">${hookType}</span>`
+                                        : `<span class="hook-tag other">Not analyzed</span>`
+                                    }
+                                    <span class="video-stats">👁 ${formatNumber(video.reach || 0)} · ♥ ${video.like_count || 0} · 💬 ${video.comments_count || 0}</span>
+                                    <span class="video-date">${formatDate(video.timestamp)}</span>
                                 </div>
-                                <span class="video-date">${formatDate(video.timestamp)}</span>
                             </div>
-                            ${hasTranscript ? `
-                                <div class="transcript-panel">
-                                    <div class="transcript-header">
-                                        <span class="transcript-label">Full Script</span>
-                                        <button class="btn btn-copy" onclick="copyTranscript('${video.id}')">Copy</button>
-                                    </div>
-                                    <div class="transcript-text">${transcripts[video.id]}</div>
+                            <div class="video-actions">
+                                ${hasTranscript 
+                                    ? '<button class="btn btn-sm btn-success">✓ Transcribed</button>'
+                                    : `<button class="btn btn-sm btn-outline" id="btn-${video.id}" onclick="transcribeVideo('${video.id}', '${video.media_url}')">Transcribe</button>`
+                                }
+                            </div>
+                        </div>
+                        ${hasTranscript ? `
+                            <div class="transcript-box">
+                                <div class="transcript-header">
+                                    <span class="transcript-label">Full Script</span>
+                                    <button class="btn btn-sm btn-outline" onclick="copyTranscript('${video.id}')">Copy</button>
                                 </div>
-                            ` : ''}
-                        </div>
-                        <div class="video-actions">
-                            ${hasTranscript 
-                                ? '<button class="btn btn-small btn-success">✓ Transcribed</button>'
-                                : `<button class="btn btn-small btn-outline" id="btn-${video.id}" onclick="transcribeVideo('${video.id}', '${video.media_url}')">Transcribe</button>`
-                            }
-                        </div>
+                                <div class="transcript-text">${transcripts[video.id]}</div>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             }).join('');
         }
 
         function renderHookAnalysis() {
-            // Only analyze TRANSCRIBED videos
             const transcribedVideos = videos.filter(v => transcripts[v.id]);
             
             if (transcribedVideos.length === 0) {
                 document.getElementById('hookAnalysis').innerHTML = `
-                    <div class="loading" style="flex-direction: column; gap: 0.5rem;">
-                        <span>No transcribed videos yet</span>
-                        <span style="font-size: 0.85rem;">Transcribe videos to see hook performance analysis</span>
+                    <div class="empty-state">
+                        <p><strong>No transcribed videos yet</strong></p>
+                        <p>Transcribe videos to see hook performance analysis based on your spoken scripts.</p>
                     </div>
                 `;
                 return;
@@ -935,9 +350,7 @@
             transcribedVideos.forEach(v => {
                 const hookText = transcripts[v.id].split('.')[0];
                 const hookType = classifyHook(hookText);
-                if (!hookData[hookType]) {
-                    hookData[hookType] = { count: 0, totalReach: 0 };
-                }
+                if (!hookData[hookType]) hookData[hookType] = { count: 0, totalReach: 0 };
                 hookData[hookType].count++;
                 hookData[hookType].totalReach += v.reach || 0;
             });
@@ -948,8 +361,7 @@
 
             const maxAvg = Math.max(...sorted.map(h => h.avgReach));
 
-            const container = document.getElementById('hookAnalysis');
-            container.innerHTML = `
+            document.getElementById('hookAnalysis').innerHTML = `
                 <div class="hook-row hook-row-header">
                     <span>Hook Type</span>
                     <span>Performance</span>
@@ -960,7 +372,7 @@
                 ${sorted.map(hook => `
                     <div class="hook-row">
                         <span class="hook-name">${hook.name}</span>
-                        <div class="hook-bar-container">
+                        <div class="hook-bar-bg">
                             <div class="hook-bar" style="width: ${(hook.avgReach / maxAvg) * 100}%"></div>
                         </div>
                         <span class="hook-stat">${hook.count}</span>
@@ -972,7 +384,6 @@
         }
 
         function renderTrends() {
-            // Group by week
             const weekData = {};
             videos.forEach(v => {
                 const date = new Date(v.timestamp);
@@ -983,17 +394,12 @@
                 weekData[weekKey] += v.reach || 0;
             });
 
-            const weeks = Object.entries(weekData)
-                .sort((a, b) => a[0].localeCompare(b[0]))
-                .slice(-8);
-
+            const weeks = Object.entries(weekData).sort((a, b) => a[0].localeCompare(b[0])).slice(-8);
             const maxReach = Math.max(...weeks.map(w => w[1]));
 
-            const container = document.getElementById('trendChart');
-            container.innerHTML = weeks.map(([week, reach]) => {
-                const height = maxReach > 0 ? (reach / maxReach) * 200 : 0;
-                const weekDate = new Date(week);
-                const label = weekDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            document.getElementById('trendChart').innerHTML = weeks.map(([week, reach]) => {
+                const height = maxReach > 0 ? (reach / maxReach) * 150 : 0;
+                const label = new Date(week).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 return `
                     <div class="trend-bar-wrapper">
                         <div class="trend-bar" style="height: ${height}px"></div>
@@ -1005,7 +411,7 @@
 
         async function transcribeVideo(videoId, mediaUrl) {
             const btn = document.getElementById(`btn-${videoId}`);
-            btn.className = 'btn btn-small btn-loading';
+            btn.className = 'btn btn-sm btn-loading';
             btn.textContent = 'Transcribing...';
             btn.disabled = true;
 
@@ -1015,9 +421,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ videoUrl: mediaUrl })
                 });
-
                 const data = await response.json();
-
                 if (data.error) throw new Error(data.error);
 
                 transcripts[videoId] = data.transcript;
@@ -1026,10 +430,8 @@
                 renderVideos();
                 renderStats();
                 renderHookAnalysis();
-
             } catch (error) {
-                console.error('Transcribe error:', error);
-                btn.className = 'btn btn-small btn-failed';
+                btn.className = 'btn btn-sm btn-failed';
                 btn.textContent = '✕ Failed - Retry';
                 btn.disabled = false;
             }
@@ -1044,12 +446,10 @@
 
         function copyTranscript(videoId) {
             navigator.clipboard.writeText(transcripts[videoId]);
-            const btn = event.target;
-            btn.textContent = 'Copied!';
-            setTimeout(() => btn.textContent = 'Copy', 1500);
+            event.target.textContent = 'Copied!';
+            setTimeout(() => event.target.textContent = 'Copy', 1500);
         }
 
-        // Initialize
         loadVideos();
     </script>
 </body>
