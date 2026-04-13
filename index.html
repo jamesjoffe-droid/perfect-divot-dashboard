@@ -114,7 +114,8 @@
                     <div class="status-dot" id="statusDot"></div>
                     <span id="statusText">Connecting...</span>
                 </div>
-                <button class="btn" onclick="loadVideos()">Refresh</button>
+                <a href="generator.html" class="btn" style="text-decoration: none;">Script Generator</a>
+                <button class="btn" onclick="loadVideos(true)">Refresh</button>
             </div>
         </div>
 
@@ -226,7 +227,23 @@
             return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        async function loadVideos() {
+        async function loadVideos(forceRefresh = false) {
+            // Check cache first (unless force refresh)
+            const cached = localStorage.getItem('perfectDivotVideoData');
+            const cacheTime = localStorage.getItem('perfectDivotCacheTime');
+            const cacheAge = cacheTime ? Date.now() - parseInt(cacheTime) : Infinity;
+            
+            if (!forceRefresh && cached && cacheAge < 300000) { // 5 min cache
+                videos = JSON.parse(cached);
+                document.getElementById('statusDot').className = 'status-dot';
+                document.getElementById('statusText').textContent = 'Cached · ' + new Date(parseInt(cacheTime)).toLocaleTimeString();
+                renderVideos();
+                renderStats();
+                renderHookAnalysis();
+                renderTrends();
+                return;
+            }
+
             document.getElementById('statusText').textContent = 'Loading...';
             document.getElementById('statusDot').className = 'status-dot loading';
             
@@ -239,17 +256,23 @@
 
                 videos = data.data.filter(v => v.media_type === 'VIDEO' || v.media_type === 'REEL');
 
-                for (let video of videos) {
-                    try {
-                        const insightsResponse = await fetch(
-                            `https://graph.facebook.com/${API_VERSION}/${video.id}/insights?metric=views&access_token=${ACCESS_TOKEN}`
-                        );
-                        const insightsData = await insightsResponse.json();
-                        if (insightsData.data && insightsData.data[0]) {
-                            video.views = insightsData.data[0].values[0].value;
-                        }
-                    } catch (e) { video.views = 0; }
-                }
+                // Fetch all insights in PARALLEL (much faster)
+                const insightsPromises = videos.map(video => 
+                    fetch(`https://graph.facebook.com/${API_VERSION}/${video.id}/insights?metric=views&access_token=${ACCESS_TOKEN}`)
+                        .then(r => r.json())
+                        .then(d => ({ id: video.id, views: d.data?.[0]?.values?.[0]?.value || 0 }))
+                        .catch(() => ({ id: video.id, views: 0 }))
+                );
+                
+                const insights = await Promise.all(insightsPromises);
+                insights.forEach(i => {
+                    const video = videos.find(v => v.id === i.id);
+                    if (video) video.views = i.views;
+                });
+
+                // Cache results
+                localStorage.setItem('perfectDivotVideoData', JSON.stringify(videos));
+                localStorage.setItem('perfectDivotCacheTime', Date.now().toString());
 
                 document.getElementById('statusDot').className = 'status-dot';
                 document.getElementById('statusText').textContent = 'Connected · ' + new Date().toLocaleTimeString();
