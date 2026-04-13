@@ -3,340 +3,2451 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Script Generator - The Perfect Divot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Script Generator | The Perfect Divot</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', -apple-system, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.5; }
-        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-        .logo { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #c9a227, #a8860d); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .logo-text { font-size: 20px; font-weight: 700; }
-        .logo-sub { font-size: 13px; color: #6b7280; }
-        .nav-link { color: #16a34a; text-decoration: none; font-weight: 500; font-size: 14px; }
-        .nav-link:hover { text-decoration: underline; }
-        .panel { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 1.5rem; margin-bottom: 1.5rem; }
-        .panel-title { font-size: 18px; font-weight: 600; margin-bottom: 1rem; }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-label { font-size: 13px; color: #6b7280; display: block; margin-bottom: 8px; font-weight: 500; }
-        select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white; cursor: pointer; }
-        select:focus { outline: none; border-color: #16a34a; }
-        .btn { background: #16a34a; color: white; border: none; border-radius: 8px; padding: 14px 24px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; }
-        .btn:hover { background: #15803d; }
-        .btn-sm { padding: 8px 16px; font-size: 13px; width: auto; }
-        .btn-outline { background: white; color: #374151; border: 1px solid #d1d5db; }
-        .btn-outline:hover { background: #f3f4f6; }
-        .results { display: none; }
-        .results.show { display: block; }
-        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .results-title { font-size: 14px; font-weight: 600; color: #6b7280; }
-        .script-card { background: #f9fafb; border-radius: 10px; padding: 1.25rem; margin-bottom: 12px; border: 1px solid #e5e7eb; }
-        .script-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .script-number { font-size: 12px; color: #9ca3af; font-weight: 600; }
-        .script-text { font-size: 14px; line-height: 1.7; color: #374151; }
-        .btn-copy { padding: 6px 14px; font-size: 12px; }
-        .btn-copied { background: #d1fae5 !important; color: #065f46 !important; border-color: #d1fae5 !important; }
-        .formula-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.5rem; }
-        .formula-title { font-size: 14px; font-weight: 600; color: #065f46; margin-bottom: 10px; }
-        .formula-list { font-size: 13px; color: #166534; }
-        .formula-list li { margin-bottom: 4px; }
-        footer { text-align: center; padding: 2rem; color: #6b7280; font-size: 13px; }
-        footer a { color: #16a34a; text-decoration: none; font-weight: 600; }
-        @media (max-width: 600px) {
-            .container { padding: 1rem; }
-            .header { flex-direction: column; align-items: flex-start; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 16px;
+        }
+        
+        .filter-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            color: #1a472a;
+            margin-bottom: 8px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: #1a472a;
+        }
+        
+        .toggle-row {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .toggle-group {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .toggle-group label {
+            font-weight: 600;
+            color: #1a472a;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            background: #e8e8e8;
+        }
+        
+        .toggle-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .toggle-btn.active {
+            background: #1a472a;
+            color: white;
+        }
+        
+        .toggle-btn:hover:not(.active) {
+            background: #ddd;
+        }
+        
+        .generate-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto 0;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 71, 42, 0.4);
+        }
+        
+        .script-output {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .script-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a472a;
+        }
+        
+        .script-meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-tag {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .meta-tag.length {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .meta-tag.style-analytical {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .meta-tag.style-hype {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        .meta-tag.words {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .captions-section {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .captions-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #f57c00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .captions-label::before {
+            content: "📱";
+        }
+        
+        .caption-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .caption-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .caption-number {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ff9800;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .caption-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            padding-left: 12px;
+        }
+        
+        .caption-timing {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+            padding-left: 12px;
+        }
+        
+        .script-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #1a472a;
+        }
+        
+        .script-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1a472a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .script-label::before {
+            content: "🎙️";
+        }
+        
+        .script-text {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        .script-text .pause {
+            color: #888;
+            font-style: italic;
+        }
+        
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #1a472a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #2d5a3f;
+        }
+        
+        .copy-btn.copied {
+            background: #4caf50;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: #1a472a;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="logo">
-                <div class="logo-icon">⛳</div>
-                <div>
-                    <div class="logo-text">Script Generator</div>
-                    <div class="logo-sub">The Perfect Divot</div>
+        <header>
+            <img src="data:image/png;base64,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" alt="The Perfect Divot" class="logo">
+            <h1>Script Generator</h1>
+            <p class="subtitle">Choose your filters and generate winning video scripts</p>
+        </header>
+        
+        <div class="filter-section">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Hook Type</label>
+                    <select id="hookType">
+                        <option value="identity">Identity Callout</option>
+                        <option value="frustration">Shared Frustration</option>
+                        <option value="question">Question Hook</option>
+                        <option value="tip">Quick Tip</option>
+                        <option value="bold">Bold Statement</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Angle</label>
+                    <select id="angle">
+                        <option value="general">General</option>
+                        <option value="feel">Feel & Contact</option>
+                        <option value="practice">Practice & Improvement</option>
+                        <option value="portability">Portability</option>
+                        <option value="value">Value & Price</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Length</label>
+                    <select id="length">
+                        <option value="30">~30 seconds</option>
+                        <option value="45">~45 seconds</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Style</label>
+                    <select id="style">
+                        <option value="analytical">Analytical</option>
+                        <option value="hype">Hype</option>
+                    </select>
                 </div>
             </div>
-            <a href="index.html" class="nav-link">← Back to Dashboard</a>
-        </div>
-
-        <div class="formula-box">
-            <div class="formula-title">Your winning formula</div>
-            <ol class="formula-list">
-                <li><strong>Hook</strong> — Identity, frustration, question, tip, or bold opener</li>
-                <li><strong>Problem</strong> — Range mats lie / hide mistakes</li>
-                <li><strong>Solution</strong> — The Perfect Divot</li>
-                <li><strong>Credibility</strong> — 3/32nds inch technical detail</li>
-                <li><strong>Benefit</strong> — Real grass feel / honest feedback</li>
-                <li><strong>CTA</strong> — GolfMatsSuck.com or link in bio</li>
-            </ol>
-        </div>
-
-        <div class="panel">
-            <div class="panel-title">Generate new scripts</div>
             
-            <div class="form-group">
-                <label class="form-label">Hook type</label>
-                <select id="hookType">
-                    <option value="identity">Identity callout — "If you're a golfer..."</option>
-                    <option value="frustration">Shared frustration — Range mats suck</option>
-                    <option value="question">Question hook — "Ever wonder why..."</option>
-                    <option value="tip">Quick tip — "Here's a hack..."</option>
-                    <option value="bold">Bold statement — "Stop doing this..."</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Focus angle</label>
-                <select id="angle">
-                    <option value="general">General — The Perfect Divot benefits</option>
-                    <option value="feel">Feel — Simulate real grass contact</option>
-                    <option value="practice">Practice quality — Better range sessions</option>
-                    <option value="portability">Portability — Fits in your bag</option>
-                    <option value="price">Value — Affordable upgrade</option>
-                </select>
-            </div>
-
-            <button class="btn" onclick="generateScripts()">Generate 5 Script Variations</button>
+            <button class="generate-btn" onclick="generateScript()">🎬 Generate Script</button>
         </div>
-
-        <div class="results" id="results">
-            <div class="panel">
-                <div class="results-header">
-                    <span class="results-title">Generated Scripts</span>
-                </div>
-                <div id="scriptList"></div>
+        
+        <div class="script-output" id="output">
+            <div class="empty-state">
+                <h3>Ready to create</h3>
+                <p>Select your filters and click Generate Script</p>
             </div>
         </div>
-
-        <footer>
-            <a href="https://golfmatssuck.com" target="_blank">GolfMatsSuck.com</a> · The Perfect Divot
-        </footer>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+        </div>
     </div>
 
     <script>
-const scripts = {
-  identity: {
-    general: [
-      "If you're a golfer who practices at the range, you know that feeling when you pure a shot on the mat but it feels nothing like the course. That's because range mats lie to you. The Perfect Divot elevates your ball 3/32nds of an inch — the exact height of real grass. Now every shot feels like the course. Fits right in your bag. Link in bio.",
-      "If you're a golfer, you've probably noticed your range sessions don't translate to the course. Here's why — mats don't give you real feedback. We made The Perfect Divot to fix that. It lifts your ball 3/32nds of an inch so you get that true grass feel on every swing. Check it out at GolfMatsSuck.com.",
-      "If you're a golfer who actually wants to improve, you need to feel the difference between good and bad contact. Range mats hide your mistakes. The Perfect Divot gives you honest feedback by replicating real turf height. 3/32nds of an inch makes all the difference. Link's in the bio.",
-      "If you're a golfer tired of striping balls at the range then chunking on the course, I get it. Mats are forgiving in all the wrong ways. That's why we built The Perfect Divot — it elevates your ball to simulate real grass so you actually know how you're hitting it. GolfMatsSuck.com.",
-      "If you're a golfer who takes practice seriously, you need The Perfect Divot. It raises your ball 3/32nds of an inch off the mat — same as sitting on real grass. No more false confidence from fat shots that feel pure. Get yours at GolfMatsSuck.com."
-    ],
-    feel: [
-      "If you're a golfer, you know mat contact feels completely different from grass. That weird bouncy feeling? Gone. The Perfect Divot elevates your ball 3/32nds of an inch so every strike feels like you're on the course. Finally, practice that transfers. Link in bio.",
-      "If you're a golfer chasing that pure contact feeling at the range, here's the problem — mats don't let you feel your mishits. The Perfect Divot fixes that by lifting your ball to real grass height. 3/32nds of an inch, but it changes everything. GolfMatsSuck.com.",
-      "If you're a golfer who loves that feeling of compressing the ball off real turf, you're gonna love this. The Perfect Divot simulates grass contact on any mat. 3/32nds of an inch elevation. The feel is unreal. Check it out, link in bio.",
-      "If you're a golfer, nothing beats that crisp feeling of ball-first contact on grass. But range mats? They lie. The Perfect Divot brings back real feel by elevating your ball to actual turf height. Trust your contact again. GolfMatsSuck.com.",
-      "If you're a golfer frustrated that range shots feel nothing like course shots, this is for you. The Perfect Divot elevates your ball 3/32nds of an inch — just like real grass. You'll actually feel your strikes. Game changer. Link in bio."
-    ],
-    practice: [
-      "If you're a golfer putting in hours at the range but not seeing results on the course, your mat is the problem. The Perfect Divot makes every practice shot count by simulating real turf contact. 3/32nds of an inch elevation. Better practice, better scores. GolfMatsSuck.com.",
-      "If you're a golfer who actually wants range time to matter, listen up. Mats give you false feedback on bad swings. The Perfect Divot fixes that — elevates your ball 3/32nds of an inch for true grass feel. Quality practice starts here. Link in bio.",
-      "If you're a golfer serious about improving, you need honest feedback. Range mats hide your mistakes. The Perfect Divot elevates your ball to real grass height so you know exactly how you're hitting it. Practice with purpose. GolfMatsSuck.com.",
-      "If you're a golfer wondering why your range game doesn't show up on the course, here's the truth — mats are lying to you. The Perfect Divot creates real turf conditions anywhere. 3/32nds of an inch. Real feedback. Real improvement. Link in bio.",
-      "If you're a golfer who's tired of wasting range sessions, The Perfect Divot is what you need. It elevates your ball to simulate grass so every swing gives you honest feedback. No more guessing. Practice actually works now. GolfMatsSuck.com."
-    ],
-    portability: [
-      "If you're a golfer who practices anywhere, you need this. The Perfect Divot fits right in your bag — weighs almost nothing. Set it on any mat and instantly get real grass feel. 3/32nds of an inch elevation, massive difference. GolfMatsSuck.com.",
-      "If you're a golfer, imagine having real turf feel in your pocket. The Perfect Divot is small enough for your bag but transforms any mat into a proper practice surface. 3/32nds of an inch. Take it anywhere. Link in bio.",
-      "If you're a golfer on the go, this fits your game. The Perfect Divot travels with you — throw it in your bag, set it on any range mat, and practice like you're on grass. Portable. Simple. Effective. GolfMatsSuck.com.",
-      "If you're a golfer, you can't bring grass to the range, but you can bring this. The Perfect Divot slides right into your bag. Sets up in seconds. Gives you real turf feel on any mat. 3/32nds of an inch makes it happen. Link in bio.",
-      "If you're a golfer who bounces between ranges, here's your secret weapon. The Perfect Divot is completely portable — fits in any bag pocket. Pop it on the mat, get real grass contact. No excuses. Practice right everywhere. GolfMatsSuck.com."
-    ],
-    price: [
-      "If you're a golfer looking to improve without breaking the bank, this is it. The Perfect Divot costs less than a sleeve of Pro V1s but transforms every range session. Real grass feel for under 40 bucks. No brainer. GolfMatsSuck.com.",
-      "If you're a golfer, you've probably spent hundreds on lessons and equipment. But for less than $40, The Perfect Divot gives you real turf feedback on every shot. Best value upgrade you'll make this year. Link in bio.",
-      "If you're a golfer on a budget, hear me out. The Perfect Divot is the cheapest way to practice like the pros. Under $40 for real grass feel at any range. Pays for itself in better practice. GolfMatsSuck.com.",
-      "If you're a golfer, think about what you spend on range balls. Now for less than $40, you can make every bucket count. The Perfect Divot gives you real turf conditions anywhere. Easy investment. Link in bio.",
-      "If you're a golfer who wants pro-level practice without pro-level costs, The Perfect Divot delivers. Under 40 bucks. Fits in your bag. Real grass feel on any mat. Do the math. GolfMatsSuck.com."
-    ]
-  },
-  frustration: {
-    general: [
-      "Range mats suck. You know it, I know it. You hit a fat shot and it still flies 150 yards like nothing happened. Then you get on the course and chunk it into the pond. The Perfect Divot fixes that. Elevates your ball 3/32nds of an inch so you actually feel your mistakes. GolfMatsSuck.com.",
-      "I hate range mats. They lie to your face. Every chunked shot gets saved by that bouncy rubber garbage. That's why we made The Perfect Divot — it simulates real grass height so you get honest feedback. 3/32nds of an inch changes everything. Link in bio.",
-      "Range mats are the worst thing about practicing golf. They reward bad swings and give you zero feedback. The Perfect Divot puts an end to that lie. It elevates your ball to real turf height — 3/32nds of an inch. Now you'll know. GolfMatsSuck.com.",
-      "You know what drives me crazy? Hitting it pure at the range, then chunking it on the course. Range mats are the problem. The Perfect Divot is the solution. 3/32nds of an inch elevation gives you real grass contact. Finally. Link in bio.",
-      "Sick of range mats lying to you? Same. A fat shot shouldn't feel like a stripe. That's why The Perfect Divot exists. It lifts your ball 3/32nds of an inch — real grass height — so you know exactly how you hit it. GolfMatsSuck.com."
-    ],
-    feel: [
-      "Range mats feel nothing like grass. That springy bounce is giving you false confidence on every shot. The Perfect Divot kills that lie — elevates your ball 3/32nds of an inch for real turf contact. Feel the difference. GolfMatsSuck.com.",
-      "Hate how range mats feel? Same. That fake, bouncy contact is ruining your practice. The Perfect Divot brings back real feedback by lifting your ball to true grass height. 3/32nds of an inch. Your hands will thank you. Link in bio.",
-      "Range mat feel is disgusting. Nothing like real turf. That's why I use The Perfect Divot — it elevates your ball 3/32nds of an inch so every strike feels like the course. Bye bye rubber bounce. GolfMatsSuck.com.",
-      "That gross mat feeling is lying to you. Bouncy, forgiving garbage. The Perfect Divot fixes it by lifting your ball to actual turf height. 3/32nds of an inch. Now practice feels real. Link in bio.",
-      "If you're tired of that weird range mat feel, The Perfect Divot is your answer. No more bouncy false contact. Just real grass feel, 3/32nds of an inch off the mat. Your irons will feel like they should. GolfMatsSuck.com."
-    ],
-    practice: [
-      "Range mats are killing your game. You practice for hours getting false feedback on every shot. The Perfect Divot stops the lies — elevates your ball 3/32nds of an inch for real turf conditions. Practice that actually works. GolfMatsSuck.com.",
-      "Wasting time at the range? Blame the mat. It's hiding your mistakes and building bad habits. The Perfect Divot gives you honest feedback by simulating real grass. 3/32nds of an inch makes your practice count. Link in bio.",
-      "Range mats are why your practice doesn't transfer to the course. They forgive fat shots that grass would punish. The Perfect Divot fixes that — real turf height, real feedback, real improvement. GolfMatsSuck.com.",
-      "Frustrated that range sessions don't help? Your mat is the problem. It's saving shots that would be disasters on grass. The Perfect Divot tells you the truth. 3/32nds of an inch of brutal honesty. Link in bio.",
-      "Range mats are practice killers. All that work building a false swing. The Perfect Divot creates real conditions so your practice actually transfers. 3/32nds of an inch elevation. Game changer. GolfMatsSuck.com."
-    ],
-    portability: [
-      "Range mats suck everywhere. Good thing The Perfect Divot fits in your bag. Take it to any range and turn that garbage mat into a real practice surface. 3/32nds of an inch of grass feel, anywhere. GolfMatsSuck.com.",
-      "Sick of bad mats at every range you visit? Bring your own solution. The Perfect Divot travels with you — weighs nothing, fits anywhere, fixes any mat. 3/32nds of an inch. No more excuses. Link in bio.",
-      "Every range has terrible mats. Now you can fix them all. The Perfect Divot fits in your bag and gives you real turf feel anywhere. Portable, simple, essential. GolfMatsSuck.com.",
-      "Range mats are universally awful. The Perfect Divot is the universal fix. Throw it in your bag, use it anywhere. 3/32nds of an inch of real grass feel on demand. Link in bio.",
-      "Bad mats at your range? Probably. The Perfect Divot travels with you. Sets up in seconds on any surface. Real turf height, real feedback, real portable. GolfMatsSuck.com."
-    ],
-    price: [
-      "Range mats have been ripping you off for years — hiding your mistakes, wasting your practice time. Fix it for under $40. The Perfect Divot gives you real grass feedback on any mat. Best money you'll spend on golf. GolfMatsSuck.com.",
-      "You spend money on balls that mats help you mis-hit. Invest $40 in The Perfect Divot and make every range session count. Real grass feel, real feedback. No more wasted practice. Link in bio.",
-      "Range mats cost you more than you think — bad habits, false confidence, chunked shots on the course. Fix it all for under $40. The Perfect Divot. Cheapest swing fix in golf. GolfMatsSuck.com.",
-      "Mats are stealing your money by ruining your practice. For less than $40, The Perfect Divot gives it back. Real turf feel, honest feedback, actual improvement. Worth it. Link in bio.",
-      "Range mats suck. You know what doesn't? Spending under $40 to fix them forever. The Perfect Divot gives you grass feel on any mat. Best cheap golf upgrade there is. GolfMatsSuck.com."
-    ]
-  },
-  question: {
-    general: [
-      "Ever wonder why your range game doesn't show up on the course? It's the mats. They save your bad shots and give you false confidence. The Perfect Divot fixes that — elevates your ball 3/32nds of an inch to simulate real grass. Now you know the truth. GolfMatsSuck.com.",
-      "Why do fat shots feel fine at the range but chunk on the course? Your mat is lying. The Perfect Divot creates real turf conditions by lifting your ball 3/32nds of an inch. Get honest feedback. Link in bio.",
-      "Have you ever striped it at the range then struggled on the course? Here's why — mats don't give real feedback. The Perfect Divot does. 3/32nds of an inch elevation. Real grass feel. Real improvement. GolfMatsSuck.com.",
-      "What if you could turn any range mat into real grass conditions? You can. The Perfect Divot elevates your ball 3/32nds of an inch — exact height of turf. Practice like you play. Link in bio.",
-      "Why do pros hit off grass while you're stuck on rubber? Because feel matters. The Perfect Divot brings that pro-level feedback to any range. 3/32nds of an inch changes everything. GolfMatsSuck.com."
-    ],
-    feel: [
-      "Ever notice how range mats feel nothing like grass? That bouncy contact is lying to you. The Perfect Divot fixes it — 3/32nds of an inch elevation for real turf feel. Trust your hands again. GolfMatsSuck.com.",
-      "Why does hitting off mats feel so wrong? Because it is wrong. The Perfect Divot simulates actual grass height so your contact feels real again. 3/32nds of an inch. Game changing feel. Link in bio.",
-      "What if you could feel your mishits at the range? You can. The Perfect Divot lifts your ball to real turf height — 3/32nds of an inch. No more hidden chunks. Real feedback. GolfMatsSuck.com.",
-      "Have you noticed fat shots feel pure on mats? That's the problem. The Perfect Divot brings back real feel by elevating your ball to grass height. 3/32nds of an inch of honesty. Link in bio.",
-      "Why does grass feel different than mats? Height. The ball sits 3/32nds of an inch higher on real turf. The Perfect Divot replicates exactly that. Real feel, any range. GolfMatsSuck.com."
-    ],
-    practice: [
-      "Why isn't your practice paying off? Your mat is hiding your mistakes. The Perfect Divot shows you the truth — real grass conditions, 3/32nds of an inch of honest feedback. Practice that works. GolfMatsSuck.com.",
-      "Ever wonder why hours of range time don't help? Mats give false feedback. The Perfect Divot fixes that by simulating real turf. 3/32nds of an inch elevation. Productive practice finally. Link in bio.",
-      "What if every range session actually improved your game? It can. The Perfect Divot creates real grass conditions on any mat. 3/32nds of an inch. Practice that transfers. GolfMatsSuck.com.",
-      "Why do you hit it great at the range and terrible on the course? False feedback from mats. The Perfect Divot gives you truth. 3/32nds of an inch of real grass feel. Link in bio.",
-      "Have you ever questioned why your range sessions don't count? The mat. It's lying. The Perfect Divot creates honest conditions — real turf height, real feedback. Finally improve. GolfMatsSuck.com."
-    ],
-    portability: [
-      "What if you could take real grass feel to any range? You can. The Perfect Divot fits in your bag and transforms any mat. 3/32nds of an inch. Portable perfection. GolfMatsSuck.com.",
-      "Ever wish you could fix every bad range mat? Done. The Perfect Divot travels with you — weighs nothing, works anywhere. 3/32nds of an inch of grass feel on demand. Link in bio.",
-      "Why settle for whatever mat the range gives you? Bring your own fix. The Perfect Divot fits in any bag. Real turf conditions anywhere. 3/32nds of an inch. GolfMatsSuck.com.",
-      "What's the easiest way to improve your range sessions? This. The Perfect Divot — fits in your bag, fixes any mat. 3/32nds of an inch of real grass feel. Portable. Simple. Link in bio.",
-      "Why struggle with different mats at different ranges? The Perfect Divot travels with you. Same real grass feel everywhere. 3/32nds of an inch. Fits right in your bag. GolfMatsSuck.com."
-    ],
-    price: [
-      "What's the cheapest way to upgrade your practice? Under $40 — The Perfect Divot. Real grass feel on any mat. 3/32nds of an inch. Best value in golf. GolfMatsSuck.com.",
-      "How much would you pay for pro-level practice conditions? Try less than $40. The Perfect Divot gives you real turf feel anywhere. 3/32nds of an inch of value. Link in bio.",
-      "What's the best bang for your buck in golf? The Perfect Divot. Under $40 for real grass conditions at any range. 3/32nds of an inch. Easy decision. GolfMatsSuck.com.",
-      "Why spend hundreds on lessons when your mat is lying? Fix the foundation first. The Perfect Divot — under $40 for honest practice. 3/32nds of an inch. Link in bio.",
-      "What if under $40 could fix your range sessions forever? It can. The Perfect Divot — real grass feel, any mat, any range. 3/32nds of an inch. Worth it. GolfMatsSuck.com."
-    ]
-  },
-  tip: {
-    general: [
-      "Here's a hack for better range sessions. Your mat is lying to you — but The Perfect Divot fixes it. Elevates your ball 3/32nds of an inch to simulate real grass. Instant honest feedback. Fits in your bag. GolfMatsSuck.com.",
-      "Quick tip to improve your practice immediately. Put The Perfect Divot under your ball — it lifts it 3/32nds of an inch to real turf height. Now you'll actually feel your contact. Game changer. Link in bio.",
-      "Secret to making range time count — don't trust the mat. Use The Perfect Divot to simulate real grass conditions. 3/32nds of an inch elevation. Your practice actually transfers. GolfMatsSuck.com.",
-      "Here's a trick the pros know — mat contact isn't real contact. The Perfect Divot fixes it by elevating your ball to grass height. 3/32nds of an inch. Honest practice starts here. Link in bio.",
-      "Simple hack for any range session. The Perfect Divot raises your ball 3/32nds of an inch — same as real turf. Suddenly your practice makes sense. Fits right in your bag. GolfMatsSuck.com."
-    ],
-    feel: [
-      "Here's how to get real feel at the range. The Perfect Divot elevates your ball 3/32nds of an inch so contact feels like grass, not rubber. Trust your hands again. Link in bio.",
-      "Tip for better contact feedback — use The Perfect Divot. It simulates real grass height so you actually feel your shots. 3/32nds of an inch makes all the difference. GolfMatsSuck.com.",
-      "Want that pure contact feeling at the range? The Perfect Divot is the secret. Elevates your ball to turf height — 3/32nds of an inch — for real feel on every shot. Link in bio.",
-      "Here's the hack for feeling your mishits at the range. The Perfect Divot lifts your ball 3/32nds of an inch. No more hidden fat shots. Real feedback, real feel. GolfMatsSuck.com.",
-      "Quick tip — if mat contact feels weird, it's because it is. The Perfect Divot brings back real turf feel. 3/32nds of an inch of honest feedback. Your irons will thank you. Link in bio."
-    ],
-    practice: [
-      "Here's how to make every range session count. The Perfect Divot creates real grass conditions on any mat. 3/32nds of an inch elevation. Practice that actually improves your game. GolfMatsSuck.com.",
-      "Tip for productive practice — stop trusting the mat. The Perfect Divot gives honest feedback by simulating real turf height. 3/32nds of an inch. Every shot tells the truth. Link in bio.",
-      "Want range sessions that transfer to the course? Use The Perfect Divot. It creates real grass conditions so your practice actually counts. 3/32nds of an inch. Simple upgrade. GolfMatsSuck.com.",
-      "Here's the secret to practice that works. The Perfect Divot simulates real turf — 3/32nds of an inch elevation — so you're building real skills, not mat skills. Link in bio.",
-      "Quick hack for better practice. The Perfect Divot turns any mat into real conditions. 3/32nds of an inch of grass feel. Your improvement just accelerated. GolfMatsSuck.com."
-    ],
-    portability: [
-      "Pro tip — bring your own practice fix. The Perfect Divot fits in your bag and turns any mat into grass conditions. 3/32nds of an inch. Take it anywhere. GolfMatsSuck.com.",
-      "Here's a hack for road golfers. The Perfect Divot travels with you. Weighs nothing, fixes any mat, gives you real feel. 3/32nds of an inch. Never settle for bad mats again. Link in bio.",
-      "Tip for any range you visit. The Perfect Divot fits in your bag pocket. Sets up in seconds. Real grass feel anywhere. 3/32nds of an inch of portable perfection. GolfMatsSuck.com.",
-      "Here's the move — throw The Perfect Divot in your bag. Now every range has real turf conditions. 3/32nds of an inch. Simple, portable, essential. Link in bio.",
-      "Quick hack for consistent practice anywhere. The Perfect Divot goes where you go. Any mat becomes grass. 3/32nds of an inch in your pocket. GolfMatsSuck.com."
-    ],
-    price: [
-      "Here's a cheap hack for better golf. Under $40, The Perfect Divot gives you real grass feel on any mat. 3/32nds of an inch. Best value upgrade available. GolfMatsSuck.com.",
-      "Tip for golfers on a budget. The Perfect Divot costs less than two sleeves of balls but upgrades every practice session. 3/32nds of an inch of value. Link in bio.",
-      "Here's how to improve without spending big. Under $40, The Perfect Divot turns any mat into real conditions. 3/32nds of an inch. Cheapest game changer in golf. GolfMatsSuck.com.",
-      "Budget tip — skip one round of drinks and get The Perfect Divot. Under $40 for pro-level practice conditions. 3/32nds of an inch. Easy choice. Link in bio.",
-      "Here's the secret to cheap improvement. The Perfect Divot — under $40 for real grass feel at any range. 3/32nds of an inch. Your wallet and game will thank you. GolfMatsSuck.com."
-    ]
-  },
-  bold: {
-    general: [
-      "Stop hitting off range mats without this. You're building bad habits with every swing. The Perfect Divot fixes the problem — elevates your ball 3/32nds of an inch for real grass contact. No more lies. GolfMatsSuck.com.",
-      "Never practice on a mat without The Perfect Divot. Seriously. It simulates real turf height so you get honest feedback. 3/32nds of an inch changes everything. Stop wasting time. Link in bio.",
-      "The Perfect Divot is the most important golf accessory you don't own. Real grass feel on any mat. 3/32nds of an inch. Your practice is worthless without it. GolfMatsSuck.com.",
-      "Fix your practice or keep getting worse. Range mats lie — The Perfect Divot tells the truth. 3/32nds of an inch of real turf conditions. Stop the madness. Link in bio.",
-      "Stop letting mats ruin your game. The Perfect Divot is the only way to practice properly at the range. 3/32nds of an inch. Real grass feel. Non-negotiable. GolfMatsSuck.com."
-    ],
-    feel: [
-      "Stop accepting that weird mat feel. It's ruining your swing. The Perfect Divot brings back real grass contact — 3/32nds of an inch. Your hands deserve truth. GolfMatsSuck.com.",
-      "Never hit another bouncy mat shot. The Perfect Divot eliminates that fake feel instantly. 3/32nds of an inch of real turf contact. Trust your feedback again. Link in bio.",
-      "The Perfect Divot is the best thing that ever happened to your contact feel. Real grass height on any mat. 3/32nds of an inch. Stop the rubber bounce forever. GolfMatsSuck.com.",
-      "Fix your contact feel today. The Perfect Divot simulates real turf — 3/32nds of an inch — so every shot feels like the course. No more mat garbage. Link in bio.",
-      "Stop tolerating bad feel. The Perfect Divot gives you pure grass contact anywhere. 3/32nds of an inch. Your irons deserve this. You deserve this. GolfMatsSuck.com."
-    ],
-    practice: [
-      "Stop wasting range sessions. Without The Perfect Divot, you're just building bad habits. Real grass conditions, 3/32nds of an inch. Practice that actually counts. GolfMatsSuck.com.",
-      "Every range session without The Perfect Divot is a waste. Mats hide your mistakes. This shows the truth. 3/32nds of an inch of honest practice. Link in bio.",
-      "The Perfect Divot will transform your practice overnight. Real turf conditions, real feedback, real improvement. 3/32nds of an inch. Stop messing around. GolfMatsSuck.com.",
-      "Never practice without this again. The Perfect Divot makes every shot count by simulating grass. 3/32nds of an inch. Your game depends on it. Link in bio.",
-      "Stop the insanity of practicing on mats without The Perfect Divot. Real grass feel, honest feedback. 3/32nds of an inch. Fix your practice now. GolfMatsSuck.com."
-    ],
-    portability: [
-      "Never go to a range without The Perfect Divot. Fits in your bag, fixes any mat. 3/32nds of an inch of real grass feel wherever you are. No excuses. GolfMatsSuck.com.",
-      "The Perfect Divot should be in every golf bag. Period. Portable, lightweight, essential. 3/32nds of an inch of grass feel on demand. Stop leaving without it. Link in bio.",
-      "Stop accepting whatever mat the range gives you. The Perfect Divot travels with you. Real conditions anywhere. 3/32nds of an inch in your pocket. GolfMatsSuck.com.",
-      "This belongs in your bag right now. The Perfect Divot — portable grass feel for any mat. 3/32nds of an inch. Never settle for garbage practice again. Link in bio.",
-      "The Perfect Divot is the most important thing in your bag after clubs. Portable real grass feel. 3/32nds of an inch. Stop practicing wrong. GolfMatsSuck.com."
-    ],
-    price: [
-      "Stop spending money on lessons when your mat is lying to you. The Perfect Divot is under $40 — fix the foundation first. 3/32nds of an inch. Best investment in golf. GolfMatsSuck.com.",
-      "Under $40 to fix your entire practice routine. The Perfect Divot is the cheapest game changer available. 3/32nds of an inch. Stop overthinking, just get it. Link in bio.",
-      "The Perfect Divot is the best money you'll spend on golf this year. Under $40 for real grass conditions. 3/32nds of an inch. Don't wait. GolfMatsSuck.com.",
-      "Stop wasting money on range balls you're mis-hitting. Invest $40 in The Perfect Divot. Real feedback, real improvement. 3/32nds of an inch. Link in bio.",
-      "For less than dinner out, The Perfect Divot fixes your practice forever. Under $40. 3/32nds of an inch of real grass feel. No brainer. GolfMatsSuck.com."
-    ]
-  }
-};
+        // Script database organized by [style][hook][angle][length]
+        const scripts = {
+            analytical: {
+                identity: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Golfers Only 🏌️", timing: "Opening" },
+                                { text: "3/32\" = Real Grass", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who practices on mats, this is for you.
 
-function generateScripts() {
-    const hookType = document.getElementById('hookType').value;
-    const angle = document.getElementById('angle').value;
-    const results = document.getElementById('results');
-    const scriptList = document.getElementById('scriptList');
-    
-    const variations = scripts[hookType][angle];
-    
-    scriptList.innerHTML = variations.map((script, i) => `
-        <div class="script-card">
-            <div class="script-header">
-                <span class="script-number">VARIATION ${i + 1}</span>
-                <button class="btn btn-sm btn-outline btn-copy" onclick="copyScript(${i}, this)">Copy</button>
-            </div>
-            <div class="script-text">${script}</div>
-        </div>
-    `).join('');
-    
-    results.classList.add('show');
-    
-    window.generatedScripts = variations;
-}
+Range mats lie to you. They hide your fat shots and mess with your contact.
 
-function copyScript(index, btn) {
-    navigator.clipboard.writeText(window.generatedScripts[index]);
-    btn.textContent = 'Copied!';
-    btn.classList.add('btn-copied');
-    setTimeout(() => {
-        btn.textContent = 'Copy';
-        btn.classList.remove('btn-copied');
-    }, 1500);
-}
+That's why we made The Perfect Divot. It lifts the ball just 3/32nds of an inch — enough to feel real turf feedback on every swing.
+
+Fits in your bag. Works on any mat.
+
+Try it at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Hey Golfers 👋", timing: "Opening" },
+                                { text: "Your Mat LIES to You", timing: "Problem" },
+                                { text: "3/32\" Solution", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who hits balls at the range, I need to tell you something.
+
+Your practice mat is lying to you. Every time you hit it fat, the club bounces into the ball anyway. You think you striped it, but on real grass? That's a chunk.
+
+That's exactly why we created The Perfect Divot. It elevates the ball just 3/32nds of an inch — that tiny gap forces you to make ball-first contact.
+
+It's the size of a smartphone, fits right in your bag, and works on any range mat or simulator setup.
+
+Get real feedback from every swing at golfmatsSUCK.com`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "Golfers Know This 👇", timing: "Opening" },
+                                { text: "REAL Contact Feel", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer, you know the feeling — pure contact off grass is completely different than mats.
+
+Mats hide everything. Fat shots still feel solid because the club bounces.
+
+The Perfect Divot fixes that. 3/32nds of an inch of elevation gives you real turf feedback.
+
+Your hands will know immediately if you caught it clean.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Fellow Golfers 🏌️", timing: "Opening" },
+                                { text: "That Mat Bounce = Fake Feel", timing: "Problem" },
+                                { text: "3/32\" Changes Everything", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who cares about ball striking, you've felt this frustration.
+
+You're on the range, making swings, feeling great. Then you get on the course and chunk everything. Why? Because range mats lie about contact.
+
+That bounce you feel on mats? It's masking fat shots. On grass, those are lost strokes.
+
+The Perfect Divot lifts the ball 3/32nds of an inch. Now your hands feel the truth. Clean contact or not — no more guessing.
+
+It's changed how I practice. Try it yourself at golfmatsSUCK.com`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "Practice Smarter 🎯", timing: "Opening" },
+                                { text: "Better Reps = Lower Scores", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who actually practices, listen up.
+
+Your range sessions are supposed to make you better. But mats give you false feedback, so you're grooving bad habits.
+
+The Perfect Divot creates real conditions. 3/32nds of elevation means honest feedback every swing.
+
+Better practice, better scores.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Serious Golfers Only", timing: "Opening" },
+                                { text: "Mats = Wasted Practice?", timing: "Problem" },
+                                { text: "The 3/32\" Fix", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer putting in the work at the range, you need to hear this.
+
+Those practice sessions? They might be hurting your game. Range mats let you get away with fat shots. Your brain thinks you're pure, but you're actually ingraining bad contact.
+
+The Perfect Divot changes your practice completely. By lifting the ball 3/32nds of an inch, you get real turf conditions. Now every rep actually counts.
+
+Stop wasting range sessions. Start practicing with purpose.
+
+Get yours at golfmatsSUCK.com`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "Golfers on the Go 🏌️", timing: "Opening" },
+                                { text: "Pocket-Sized Game Changer", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who travels to play or hits the range regularly, check this out.
+
+The Perfect Divot is smaller than your phone. Slides right in your bag.
+
+3/32nds of elevation, real grass feel, anywhere you practice.
+
+Take it to the range. Use it on your sim. Bring it on golf trips.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Traveling Golfers 👋", timing: "Opening" },
+                                { text: "Fits in Your Pocket", timing: "Feature" },
+                                { text: "Real Feel Anywhere", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who doesn't always practice at the same range, this is a game changer.
+
+Every mat is different. Some are rock hard, some are mushy, but they all hide your fat shots. And you can't exactly bring your own mat everywhere.
+
+The Perfect Divot fits in your pocket. Literally smaller than a smartphone.
+
+Take it to any range, any simulator, any mat surface — and get that 3/32nds of elevation that gives you real grass feedback.
+
+Consistent practice conditions, anywhere you go.
+
+golfmatsSUCK.com`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "Smart Golfers Know 💡", timing: "Opening" },
+                                { text: "Under $40 Game Upgrade", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who's spent money on lessons, new clubs, training aids — hear me out.
+
+For under 40 bucks, The Perfect Divot transforms every range session.
+
+3/32nds of an inch. Real feedback. Better practice.
+
+It's the cheapest thing in your bag that actually improves your game.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Golfers Love Deals 🏌️", timing: "Opening" },
+                                { text: "Lessons = $150+", timing: "Comparison" },
+                                { text: "This = Under $40", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `If you're a golfer who wants to improve without breaking the bank, this makes too much sense.
+
+Lessons cost $100-150 an hour. New drivers are $500+. Even range balls add up fast.
+
+The Perfect Divot is under $40. One time. And it transforms every single practice session you'll ever have.
+
+That 3/32nds of elevation gives you real grass feedback — the kind of practice that actually translates to the course.
+
+Best money you'll spend on your game.
+
+golfmatsSUCK.com`
+                        }
+                    }
+                },
+                frustration: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Range Mats SUCK 😤", timing: "Opening" },
+                                { text: "The Fix = 3/32\"", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Sick of range mats that lie to you?
+
+You hit it fat, but the club bounces and it feels fine. Then on the course? Chunk city.
+
+The Perfect Divot fixes that. 3/32nds of elevation creates real grass conditions.
+
+Finally — honest feedback on every swing.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "We ALL Hate This 👇", timing: "Opening" },
+                                { text: "Fat Shot? Mat Says 'Nice!'", timing: "Problem" },
+                                { text: "3/32\" Truth Serum", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `You know what's frustrating? Practicing your butt off at the range, feeling great, then playing like garbage on the course.
+
+Here's why: range mats lie. You hit behind the ball, the club bounces, and you think you striped it. On grass? That's a fat chunk.
+
+We built The Perfect Divot to fix this. It lifts the ball just 3/32nds of an inch — that tiny gap exposes every fat shot.
+
+Now your practice actually means something. Stop getting lied to.
+
+golfmatsSUCK.com`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "Fake Contact SUCKS 👎", timing: "Opening" },
+                                { text: "Real Feel Returns", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Tired of mats hiding your mishits?
+
+That solid feel on the range? It's fake. The mat bounces your fat shots into the ball.
+
+The Perfect Divot brings back honest feedback. 3/32nds of elevation — now your hands know the truth.
+
+Feel the difference at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "This Feeling SUCKS 😤", timing: "Opening" },
+                                { text: "Range: 'Crushed It!'", timing: "Problem 1" },
+                                { text: "Course: Chunk 💀", timing: "Problem 2" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `You know the worst feeling in golf?
+
+Spending an hour on the range, feeling like you're striping everything. Then first hole, real grass, and you chunk it 50 yards.
+
+It's because mats give you fake feedback. That solid feel? It's the mat bouncing your club into the ball.
+
+The Perfect Divot fixes this forever. 3/32nds of elevation recreates real turf contact. Now your hands know instantly if you caught it clean.
+
+No more surprises on the course.
+
+golfmatsSUCK.com`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "Wasted Practice? 😤", timing: "Opening" },
+                                { text: "Make Every Rep Count", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Frustrated that all your range time isn't helping?
+
+It's not you — it's the mat. Without real feedback, you're just grooving bad habits.
+
+The Perfect Divot gives you honest feedback. 3/32nds of elevation, real contact feel.
+
+Stop wasting practice.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Hours Wasted 😤", timing: "Opening" },
+                                { text: "Bad Feedback = Bad Habits", timing: "Problem" },
+                                { text: "3/32\" Honest Practice", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Nothing's more frustrating than putting in work and not seeing results.
+
+You're at the range hitting hundreds of balls, but your scores don't drop. Here's the problem: mats let bad swings feel good. You're literally practicing mistakes.
+
+The Perfect Divot changes everything. That 3/32nds of elevation forces ball-first contact. Fat shots feel fat. Good swings feel good.
+
+Finally, practice that actually translates.
+
+golfmatsSUCK.com`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "Hate Inconsistent Mats? 😤", timing: "Opening" },
+                                { text: "Same Feel Everywhere", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Hate how every range mat feels different?
+
+Some are rock hard, some are spongy, none feel like grass.
+
+The Perfect Divot gives you consistent real-grass feedback anywhere. Fits in your pocket, works on any surface.
+
+Take control of your practice.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Every Mat = Different 😤", timing: "Opening" },
+                                { text: "Zero Consistency", timing: "Problem" },
+                                { text: "Pocket Solution", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Sick of having to adjust to whatever garbage mat the range gives you?
+
+One day it's rock hard, next day it's worn out and mushy. Your body has no idea what good contact feels like because it's different every time.
+
+The Perfect Divot gives you the same real-grass feedback on any surface. And it's smaller than your phone — bring it anywhere.
+
+Finally, consistent practice no matter where you play.
+
+golfmatsSUCK.com`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "Wasting Money? 💸", timing: "Opening" },
+                                { text: "Under $40 Fix", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Frustrated spending money on lessons and still chunking it on the course?
+
+Your practice is the problem, not your swing. Mats hide bad contact.
+
+For under $40, The Perfect Divot gives you honest feedback every session.
+
+It's the fix your game actually needs.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Money Pit Golf 💸😤", timing: "Opening" },
+                                { text: "Lessons, Clubs, Balls...", timing: "Problem" },
+                                { text: "$40 and Done", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Sick of throwing money at your golf game with nothing to show for it?
+
+Lessons, new clubs, premium balls, training aids — you've tried everything. But you're still chunking it on the course.
+
+Here's the problem no one talks about: your practice conditions suck. Mats lie to you.
+
+The Perfect Divot costs under $40 and fixes your practice forever. 3/32nds of elevation, real grass feedback, every swing.
+
+Stop wasting money. Fix the real problem.
+
+golfmatsSUCK.com`
+                        }
+                    }
+                },
+                question: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Chunking on Course? 🤔", timing: "Opening" },
+                                { text: "It's the Mat", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Ever wonder why you hit it great on the range but chunk it on the course?
+
+It's not your swing — it's the mat. Range mats hide fat shots.
+
+The Perfect Divot exposes the truth. 3/32nds of elevation, real grass feedback.
+
+See for yourself at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Why the Difference? 🤔", timing: "Opening" },
+                                { text: "The Mat Lies", timing: "Answer" },
+                                { text: "3/32\" = Truth", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Have you ever asked yourself: why do I feel so good at the range and so bad on the course?
+
+Same swing, same clubs, completely different results. What's going on?
+
+The mat is lying to you. When you hit behind the ball, the club bounces and makes contact anyway. You think you're pure, but on grass? That's a chunk.
+
+The Perfect Divot lifts the ball 3/32nds of an inch. Just enough to expose fat shots and give you real feedback.
+
+Find out what you're really made of at golfmatsSUCK.com`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "Feel Off Lately? 🤔", timing: "Opening" },
+                                { text: "Mats Kill Your Feel", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Does your contact feel different on the course than at the range?
+
+That's because mats give fake feedback. The bounce masks your mishits.
+
+The Perfect Divot brings back true feel. 3/32nds of elevation — your hands know instantly.
+
+Get honest at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Lost Your Feel? 🤔", timing: "Opening" },
+                                { text: "Mat Bounce = Fake Feel", timing: "Problem" },
+                                { text: "Real Feedback Returns", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Do you ever feel like you've lost touch with your ball striking?
+
+On the range everything feels solid, but on the course you can't find the center of the face. It's maddening.
+
+Here's the issue: range mats mask your mishits. Your hands are getting lied to, so your feel is all messed up.
+
+The Perfect Divot gives you back real contact feedback. 3/32nds of elevation creates true turf conditions.
+
+Rediscover your feel at golfmatsSUCK.com`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "Practice Working? 🤔", timing: "Opening" },
+                                { text: "Fix Your Feedback", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Is your practice actually making you better?
+
+If you're hitting off mats, probably not. False feedback means you're grooving mistakes.
+
+The Perfect Divot gives you truth. 3/32nds of elevation, real results.
+
+Practice smarter at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Getting Better? 🤔", timing: "Opening" },
+                                { text: "Or Just Hitting Balls?", timing: "Problem" },
+                                { text: "Practice That Works", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Quick question: are your practice sessions actually improving your game?
+
+There's a difference between hitting balls and productive practice. And if you're working off range mats, you might be going backwards.
+
+Mats hide your mistakes. Every fat shot feels fine, so you never fix the problem.
+
+The Perfect Divot changes that. 3/32nds of elevation forces real contact. Now practice actually translates to the course.
+
+Start improving for real at golfmatsSUCK.com`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "Different Ranges? 🤔", timing: "Opening" },
+                                { text: "Same Feel Every Time", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Play different courses and ranges? Wondering how to get consistent practice?
+
+The Perfect Divot goes wherever you go. Pocket-sized, works on any mat.
+
+3/32nds of elevation gives you the same real grass feel everywhere.
+
+Get consistent at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Travel for Golf? 🤔", timing: "Opening" },
+                                { text: "Every Mat is Different", timing: "Problem" },
+                                { text: "Your Pocket Solution", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Do you practice at different ranges? Play at multiple courses?
+
+Here's the problem: every mat is different. Some are hard, some are mushy, none of them give you real feedback. So your practice never builds consistency.
+
+What if you could bring real grass conditions with you?
+
+The Perfect Divot fits in your pocket. Slides into any bag. Use it anywhere — same 3/32nds of elevation, same honest feedback.
+
+Take control at golfmatsSUCK.com`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "Best Investment? 🤔", timing: "Opening" },
+                                { text: "Under $40, Forever", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `What's the best money you can spend on your golf game?
+
+Not $500 drivers. Not $150 lessons. It's under $40.
+
+The Perfect Divot makes every practice session count. Real feedback, real improvement.
+
+Invest smart at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Worth the Money? 🤔", timing: "Opening" },
+                                { text: "Clubs, Lessons, Balls...", timing: "Problem" },
+                                { text: "Best $40 in Golf", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Ever wonder if all that golf spending is actually worth it?
+
+New driver: $500. Lesson package: $600. Premium balls: $50 a dozen. And your scores... about the same?
+
+Here's what actually moves the needle: better practice. And that costs under $40.
+
+The Perfect Divot transforms every range session with real grass feedback. That 3/32nds of elevation is the best investment you'll make.
+
+Get real value at golfmatsSUCK.com`
+                        }
+                    }
+                },
+                tip: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Quick Tip 💡", timing: "Opening" },
+                                { text: "3/32\" = Real Practice", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Quick tip for better ball striking:
+
+Stop trusting range mats. They hide your fat shots and mess with your feedback.
+
+Use The Perfect Divot. 3/32nds of elevation simulates real grass conditions.
+
+Now your practice actually transfers to the course.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Pro Tip 💡", timing: "Opening" },
+                                { text: "Mats Lie to You", timing: "Problem" },
+                                { text: "The 3/32\" Solution", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's a tip that'll change your practice forever.
+
+Range mats are the enemy of improvement. When you hit behind the ball, the club bounces and makes contact anyway. Your brain thinks you striped it, but you didn't.
+
+The fix is simple: elevate the ball 3/32nds of an inch.
+
+That's what The Perfect Divot does. That tiny gap exposes fat shots and gives you real grass feedback.
+
+Start practicing with truth.
+
+golfmatsSUCK.com`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "Feel Tip 🎯", timing: "Opening" },
+                                { text: "Trust Your Hands Again", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Quick tip for better feel:
+
+Your hands can't learn from fake feedback. Range mats mask your mishits.
+
+The Perfect Divot restores true contact feel. 3/32nds of elevation tells your hands the truth.
+
+Rebuild your feel at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Feel Hack 💡", timing: "Opening" },
+                                { text: "Mats Dull Your Senses", timing: "Problem" },
+                                { text: "Sharpen Your Feel", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Want better feel with your irons? Here's a tip most people don't know.
+
+Stop practicing on bare mats. The bounce dulls your senses — you can't tell good contact from bad.
+
+The Perfect Divot lifts the ball 3/32nds of an inch. Now your hands feel everything. Clean strikes, fat shots, thin hits — all obvious.
+
+Train your hands with real feedback, and your feel comes back fast.
+
+Sharpen your game at golfmatsSUCK.com`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "Practice Hack 💡", timing: "Opening" },
+                                { text: "Quality Over Quantity", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Practice tip: it's not about how many balls you hit.
+
+It's about feedback quality. Mats give you zero useful information.
+
+The Perfect Divot changes that. 3/32nds of elevation, honest feedback every swing.
+
+Practice smarter at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Range Hack 💡", timing: "Opening" },
+                                { text: "50 Good Reps > 200 Bad", timing: "Concept" },
+                                { text: "Make Every Swing Count", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's a practice tip that'll save you time and lower your scores.
+
+50 balls with perfect feedback beats 200 balls with fake feedback. Quality over quantity. But range mats give you garbage information.
+
+The Perfect Divot is your feedback upgrade. That 3/32nds of elevation forces real contact — no more hiding fat shots.
+
+Now every rep counts. You'll improve faster with half the balls.
+
+Work smarter at golfmatsSUCK.com`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "Travel Tip ✈️", timing: "Opening" },
+                                { text: "Pack This Always", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Travel tip for golfers:
+
+Always pack The Perfect Divot. It's smaller than your phone and works on any mat.
+
+3/32nds of elevation gives you real grass conditions wherever you go.
+
+Never trust a strange mat again.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Golfer Pro Tip ✈️", timing: "Opening" },
+                                { text: "Unknown Mats = No Feedback", timing: "Problem" },
+                                { text: "Pack Your Own Fix", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's a tip for golfers who play different courses.
+
+When you're warming up on an unfamiliar range, you have no idea what that mat is hiding. Could be rock hard, could be squishy — definitely not giving you real feedback.
+
+The Perfect Divot fits in any pocket. Pull it out, and suddenly you've got real grass conditions.
+
+3/32nds of elevation, honest contact, anywhere in the world.
+
+Be prepared at golfmatsSUCK.com`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "Money Tip 💰", timing: "Opening" },
+                                { text: "Under $40 = Real Results", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Money-saving tip for golfers:
+
+Skip the expensive training aids. Most are gimmicks.
+
+The Perfect Divot is under $40 and actually works. 3/32nds of elevation, real feedback, every session.
+
+Best investment you'll make. golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Budget Tip 💰", timing: "Opening" },
+                                { text: "Stop Wasting on Gimmicks", timing: "Problem" },
+                                { text: "One Purchase. Forever.", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's a tip that'll save you hundreds.
+
+Stop buying training gadgets that end up in your closet. Most of them are gimmicks designed to take your money.
+
+The Perfect Divot is different. Under $40, one time purchase, and it transforms every practice session you'll ever have.
+
+That 3/32nds of elevation gives you real grass feedback. Not a gimmick — just physics.
+
+Get real value at golfmatsSUCK.com`
+                        }
+                    }
+                },
+                bold: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Your Mat is LYING", timing: "Opening" },
+                                { text: "This Fixes It", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Your range mat is lying to you. Every single session.
+
+Fat shots feel pure. Then you get on grass and chunk everything.
+
+The Perfect Divot exposes the truth. 3/32nds of elevation, real grass feedback.
+
+Stop getting fooled.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Your Practice is BROKEN", timing: "Opening" },
+                                { text: "Mats = Fake Feedback", timing: "Problem" },
+                                { text: "The Real Fix", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Your practice is lying to you. And it's making you worse.
+
+Every time you hit off a range mat, you're getting fake feedback. Fat shots feel solid because the club bounces. Your brain thinks you're pure — you're not.
+
+The Perfect Divot is the fix. It lifts the ball just 3/32nds of an inch. Now fat shots feel fat. Clean contact feels clean.
+
+Your practice finally tells the truth.
+
+Get real at golfmatsSUCK.com`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "You've LOST Your Feel", timing: "Opening" },
+                                { text: "Here's Why", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `You've lost your feel. I'll tell you exactly why.
+
+Range mats. They bounce the club into the ball no matter how bad you hit it.
+
+Your hands are learning lies.
+
+The Perfect Divot brings back truth. 3/32nds of elevation, real contact.
+
+Reclaim your feel at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Your Hands Are LYING", timing: "Opening" },
+                                { text: "Mats Train Bad Feel", timing: "Problem" },
+                                { text: "Train Truth Instead", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Your hands are lying to you. And it's not your fault.
+
+Every range session, your hands feel contact that doesn't exist. The mat bounces, the ball flies, and you think you striped it. But on grass? Total chunk.
+
+Your feel is being trained wrong. And it shows on the course.
+
+The Perfect Divot retrains your hands with truth. 3/32nds of elevation creates real feedback.
+
+Start feeling truth at golfmatsSUCK.com`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "You're Getting WORSE", timing: "Opening" },
+                                { text: "Not Better", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's the harsh truth: your range sessions might be making you worse.
+
+Mats let you groove bad habits. You're practicing mistakes without knowing it.
+
+The Perfect Divot forces real contact. 3/32nds of elevation, honest feedback.
+
+Stop the damage at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Your Practice is BACKFIRING", timing: "Opening" },
+                                { text: "Grooving Bad Habits", timing: "Problem" },
+                                { text: "Practice That Actually Works", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `I'm going to tell you something uncomfortable.
+
+All those hours at the range? They might be making you worse. Range mats hide your mistakes. Every fat shot feels fine, so you keep making the same errors.
+
+You're not practicing your swing. You're practicing bad habits.
+
+The Perfect Divot ends this cycle. That 3/32nds of elevation exposes every mishit. Now you fix problems instead of hiding them.
+
+Break the cycle at golfmatsSUCK.com`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "STOP Trusting Strange Mats", timing: "Opening" },
+                                { text: "Bring Your Own Fix", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Stop trusting random range mats.
+
+Every mat lies differently. Some bounce more, some less — all garbage for feedback.
+
+The Perfect Divot travels with you. Pocket-sized, works anywhere.
+
+3/32nds of consistent truth.
+
+golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "NEVER Trust a Strange Mat", timing: "Opening" },
+                                { text: "They're All Liars", timing: "Problem" },
+                                { text: "Carry Your Own Truth", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's a rule: never trust a mat you don't know.
+
+Every range has different mats. Some are worn out, some are rock hard, some are spongy — all of them lie about your contact. You warm up feeling great, then spray it on the first tee.
+
+The Perfect Divot is your insurance policy. Smaller than your phone, works on any surface.
+
+3/32nds of elevation gives you consistent, real feedback everywhere you go.
+
+Take control at golfmatsSUCK.com`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "You're WASTING Money", timing: "Opening" },
+                                { text: "$40 Fixes It All", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `You're wasting money on golf. I'll prove it.
+
+Lessons on mat ranges? Worthless — fake feedback. New clubs? Won't fix bad contact.
+
+Under $40, The Perfect Divot fixes your practice. 3/32nds of honest feedback.
+
+Stop the waste at golfmatsSUCK.com`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Golf is DRAINING You 💸", timing: "Opening" },
+                                { text: "And You're Not Improving", timing: "Problem" },
+                                { text: "The $40 Solution", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Golf is draining your wallet. And you're not getting better.
+
+New driver: $500. Lessons: $150 each. Range balls: adds up fast. And your handicap? Same as last year.
+
+Here's what nobody tells you: your practice environment is broken. Mats give fake feedback, so all that investment goes nowhere.
+
+The Perfect Divot costs under $40 and fixes the root problem. Real grass feedback, every session.
+
+Stop bleeding money. Start improving.
+
+golfmatsSUCK.com`
+                        }
+                    }
+                }
+            },
+            hype: {
+                identity: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "GOLFERS Only !!", timing: "Opening" },
+                                { text: "REAL GRASS Feel", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Hey GOLFERS!!
+
+We made something INSANE...
+
+The Perfect Divot gives you REAL GRASS feel on any mat...
+
+Three thirty-seconds of an inch... that's ALL it takes...
+
+You're gonna be ADDICTED...
+
+Get yours at golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Hey GOLFERS !!", timing: "Opening" },
+                                { text: "It's NOT Rocket Science !!", timing: "Problem" },
+                                { text: "REAL GRASS FEEL", timing: "Middle" },
+                                { text: "Take our 30 Day Test Drive", timing: "CTA" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Hey GOLFERS!!
+
+It's NOT rocket science...
+
+We've ALL been hitting off the same GARBAGE mats since the 1960's...
+
+And unlike all other golf equipment... mats haven't changed in over 50 YEARS...
+
+Think about that for a second...
+
+The Perfect Divot is a REAL GRASS FEEL fix for artificial turf...
+
+Our patent pending 3/32" Divot Disc lets you hit DOWN and THROUGH without the annoying mat grab...
+
+Take our 30 Day Test Drive... we GUARANTEE you'll become ADDICTED...
+
+Just like over a THOUSAND golfers already have...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "FEEL THE DIFFERENCE !!", timing: "Opening" },
+                                { text: "3/32\" = EVERYTHING", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Golfers... you KNOW the difference...
+
+That PURE strike off grass? NOTHING like mats...
+
+The Perfect Divot brings that feel to ANY range...
+
+Three thirty-seconds of an inch... REAL contact feedback...
+
+Get ADDICTED at golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "PURE CONTACT Awaits !!", timing: "Opening" },
+                                { text: "That Feel You've Been MISSING", timing: "Problem" },
+                                { text: "3/32\" Changes EVERYTHING", timing: "Middle" },
+                                { text: "You'll Be ADDICTED", timing: "CTA" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Golfers... remember that FEELING?
+
+That PURE strike off morning dew grass...
+
+When your hands KNOW you crushed it...
+
+You can't get that on range mats... UNTIL NOW...
+
+The Perfect Divot is the PERFECT blend of agronomy science and golf innovation...
+
+Three thirty-seconds of an inch... that's all it takes for REAL contact feel...
+
+Your hands will KNOW immediately...
+
+Take our 30 Day Test Drive... you'll be ADDICTED...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "SERIOUS Golfers Only !!", timing: "Opening" },
+                                { text: "It Pays to PLAY !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Hey SERIOUS golfers!!
+
+Your practice is about to change FOREVER...
+
+The Perfect Divot makes every rep COUNT...
+
+REAL feedback... REAL improvement...
+
+It PAYS to play!!
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "LEVEL UP Your Practice !!", timing: "Opening" },
+                                { text: "Better Practice = BETTER GOLF", timing: "Concept" },
+                                { text: "It Pays to PLAY", timing: "Middle" },
+                                { text: "You'll Be ADDICTED", timing: "CTA" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Calling ALL serious golfers!!
+
+Your practice is about to reach a WHOLE new level...
+
+It's a simple concept... BETTER practice makes you a BETTER golfer...
+
+And The Perfect Divot with our REAL GRASS FEEL makes your mat practice FAR more enjoyable and FAR more productive...
+
+Three thirty-seconds of an inch... REAL feedback... REAL results...
+
+Take our 30 Day Test Drive and you'll see what all the FUSS is about...
+
+It REALLY works...
+
+Get yours at golfmatsSUCK.com!`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "Take It ANYWHERE !!", timing: "Opening" },
+                                { text: "FITS In Your Pocket", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Golfers on the GO!!
+
+The Perfect Divot fits in your POCKET...
+
+REAL grass feel ANYWHERE you practice...
+
+Range... simulator... golf trip...
+
+Never practice without it!!
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "TRAVELING Golfers Listen Up !!", timing: "Opening" },
+                                { text: "Smaller Than Your PHONE", timing: "Feature" },
+                                { text: "REAL FEEL Anywhere", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Traveling golfers... THIS is for you!!
+
+The Perfect Divot is smaller than your PHONE...
+
+Take it ANYWHERE... use it EVERYWHERE...
+
+Different ranges... different mats... doesn't matter...
+
+Three thirty-seconds of an inch gives you the SAME real grass feedback every single time...
+
+It's a GAME CHANGER for golfers on the go...
+
+You'll wonder how you EVER practiced without it...
+
+Get yours at golfmatsSUCK.com!`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "SMART Golfers Know !!", timing: "Opening" },
+                                { text: "UNDER $40 Game Changer", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `SMART golfers... listen up!!
+
+For under FORTY bucks... The Perfect Divot changes EVERYTHING...
+
+REAL feedback... REAL improvement...
+
+It's the BEST money you'll spend on golf... PERIOD...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "BEST Investment in Golf !!", timing: "Opening" },
+                                { text: "Lessons = $150+", timing: "Comparison" },
+                                { text: "This = Under $40 FOREVER", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Want to know the BEST investment in golf?
+
+It's NOT a $500 driver...
+
+It's NOT $150 lessons...
+
+It's under FORTY bucks... ONE time...
+
+The Perfect Divot transforms EVERY practice session FOREVER...
+
+REAL grass feedback... REAL improvement...
+
+Over a THOUSAND golfers are already ADDICTED...
+
+Take our 30 Day Test Drive...
+
+golfmatsSUCK.com!`
+                        }
+                    }
+                },
+                frustration: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Range Mats SUCK !!", timing: "Opening" },
+                                { text: "WE FIXED IT !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Range mats SUCK!!
+
+We've ALL been hitting off the same GARBAGE since the 60's...
+
+Finally... someone FIXED it...
+
+The Perfect Divot... REAL GRASS FEEL...
+
+Get ADDICTED at golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "WE ALL Know This !!", timing: "Opening" },
+                                { text: "Range Mats = GARBAGE", timing: "Problem" },
+                                { text: "The FIX is Here !!", timing: "Middle" },
+                                { text: "Take our 30 Day Test Drive", timing: "CTA" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `We ALL know range mats SUCK!!
+
+You hit it fat... mat bounces the club... feels FINE...
+
+Then you get on the course and CHUNK everything...
+
+It's NOT your swing... it's the MAT!!
+
+The Perfect Divot is the FIX...
+
+Three thirty-seconds of an inch of REAL GRASS FEEL...
+
+Take our 30 Day Test Drive... we GUARANTEE you'll become ADDICTED...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "FAKE Feel is KILLING You !!", timing: "Opening" },
+                                { text: "Get REAL Contact Back", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `That FAKE feel is KILLING your game!!
+
+Mats lie to your HANDS... every single time...
+
+The Perfect Divot brings back TRUTH...
+
+Three thirty-seconds... REAL contact feel...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "SICK of Fake Feedback?!", timing: "Opening" },
+                                { text: "Range = 'CRUSHED IT!'", timing: "Problem 1" },
+                                { text: "Course = CHUNK 💀", timing: "Problem 2" },
+                                { text: "NEVER Again !!", timing: "CTA" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `SICK of this happening?!
+
+Range session... feeling GREAT... crushing it...
+
+Get to the course... CHUNK city...
+
+It's the MAT lying to your hands!!
+
+The Perfect Divot gives you REAL GRASS FEEL...
+
+Three thirty-seconds of an inch... your hands know IMMEDIATELY...
+
+NEVER get fooled again...
+
+You'll be ADDICTED...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "WASTING Practice Time?!", timing: "Opening" },
+                                { text: "Make It COUNT !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `SICK of wasting practice time?!
+
+Mats are RUINING your reps...
+
+The Perfect Divot makes every swing COUNT...
+
+REAL feedback... REAL results...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "HOURS Wasted 😤", timing: "Opening" },
+                                { text: "Bad Mats = Bad HABITS", timing: "Problem" },
+                                { text: "TAKE CONTROL !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `HOURS at the range... and for WHAT?!
+
+Same handicap... same chunks on the course...
+
+Here's the TRUTH... mats are RUINING your practice...
+
+You're grooving BAD habits without even knowing...
+
+The Perfect Divot FIXES this FOREVER...
+
+Three thirty-seconds of an inch... REAL feedback every swing...
+
+Take CONTROL of your game...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "HATE Random Mats?!", timing: "Opening" },
+                                { text: "Bring Your OWN Fix !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `HATE playing mat roulette at different ranges?!
+
+Some hard... some soft... ALL garbage...
+
+The Perfect Divot... SAME great feel EVERYWHERE...
+
+Fits in your POCKET...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "EVERY Mat is Different 😤", timing: "Opening" },
+                                { text: "ZERO Consistency", timing: "Problem" },
+                                { text: "YOUR Pocket Solution !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Every mat at every range... COMPLETELY different...
+
+One's rock HARD... one's MUSHY... all of them LIE...
+
+How are you supposed to build CONSISTENCY?!
+
+The Perfect Divot is the ANSWER...
+
+Fits in your POCKET... takes it ANYWHERE...
+
+THREE thirty-seconds of an inch... SAME real feel every time...
+
+TAKE CONTROL of your practice...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "STOP Wasting Money !!", timing: "Opening" },
+                                { text: "Under $40 FIXES It", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `STOP wasting money on your game!!
+
+Lessons... clubs... gadgets... NOTHING'S working...
+
+For under FORTY bucks... The Perfect Divot ACTUALLY helps...
+
+REAL feedback... REAL results...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "MONEY PIT Golf 💸", timing: "Opening" },
+                                { text: "Lessons, Clubs, Balls...", timing: "Problem" },
+                                { text: "$40 and DONE !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Golf is a MONEY PIT... admit it!!
+
+Lessons... new clubs... premium balls... gadgets...
+
+Your wallet's EMPTY and your scores are the SAME...
+
+HERE'S THE FIX...
+
+Under FORTY bucks... ONE time... FOREVER improvement...
+
+The Perfect Divot gives you REAL practice feedback...
+
+Three thirty-seconds of an inch... GAME CHANGING...
+
+STOP the bleeding at golfmatsSUCK.com!`
+                        }
+                    }
+                },
+                question: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "CHUNKING on Course?! 🤔", timing: "Opening" },
+                                { text: "It's The MAT !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Why do you CRUSH it at the range...
+
+Then CHUNK it on the course?!
+
+It's NOT you... it's the MAT lying to you...
+
+The Perfect Divot tells the TRUTH...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "What's HAPPENING?! 🤔", timing: "Opening" },
+                                { text: "Range = GREAT", timing: "Problem 1" },
+                                { text: "Course = DISASTER", timing: "Problem 2" },
+                                { text: "HERE'S WHY !!", timing: "Answer" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Ever wonder WHY this keeps happening?!
+
+Range... feeling AMAZING... PURE contact...
+
+Course... CHUNK... CHUNK... CHUNK...
+
+What's going ON?!
+
+It's the MAT!! It's been LYING to you!!
+
+The Perfect Divot EXPOSES the truth...
+
+Three thirty-seconds of an inch... REAL grass feedback...
+
+Take our 30 Day Test Drive... see for YOURSELF...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "LOST Your Feel?! 🤔", timing: "Opening" },
+                                { text: "GET IT BACK !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Where did your FEEL go?!
+
+Mats KILLED it... fake feedback every time...
+
+The Perfect Divot brings it BACK...
+
+REAL contact... REAL feel...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Remember PURE Contact?! 🤔", timing: "Opening" },
+                                { text: "Mats STOLE Your Feel", timing: "Problem" },
+                                { text: "TAKE IT BACK !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Remember what PURE contact feels like?!
+
+That PERFECT strike off dewy grass...
+
+Your hands KNEW you crushed it...
+
+Mats STOLE that from you...
+
+Fake feedback... RUINED feel...
+
+The Perfect Divot gives it BACK...
+
+Three thirty-seconds of an inch... REAL GRASS FEEL...
+
+TAKE BACK your game at golfmatsSUCK.com!`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "Is Practice WORKING?! 🤔", timing: "Opening" },
+                                { text: "Make It COUNT !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Is your practice actually WORKING?!
+
+Or are you just hitting balls into a NET?!
+
+The Perfect Divot makes every rep COUNT...
+
+REAL feedback... REAL improvement...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "ACTUALLY Getting Better?! 🤔", timing: "Opening" },
+                                { text: "Or Just WASTING Time?!", timing: "Problem" },
+                                { text: "Practice That WORKS !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Are you ACTUALLY getting better?!
+
+Or just WASTING time at the range?!
+
+Here's the TRUTH... mats give FAKE feedback...
+
+You can't improve from LIES...
+
+The Perfect Divot gives you REAL practice...
+
+Three thirty-seconds of an inch... HONEST feedback every swing...
+
+Start ACTUALLY improving...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "Different Ranges?! 🤔", timing: "Opening" },
+                                { text: "SAME Great Feel !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Play different ranges?!
+
+Every mat is DIFFERENT... and they ALL suck...
+
+The Perfect Divot... SAME real feel ANYWHERE...
+
+Fits in your POCKET!
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "TRAVEL for Golf?! 🤔", timing: "Opening" },
+                                { text: "STRANGE Mats Everywhere", timing: "Problem" },
+                                { text: "YOUR Secret Weapon !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Do you travel for golf?!
+
+Different courses... different ranges... DIFFERENT mats...
+
+How do you practice CONSISTENTLY?!
+
+The Perfect Divot is your SECRET WEAPON...
+
+Smaller than your PHONE... fits ANY bag...
+
+Three thirty-seconds of an inch... SAME real feel EVERYWHERE...
+
+DOMINATE any range at golfmatsSUCK.com!`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "WORTH the Money?! 🤔", timing: "Opening" },
+                                { text: "Under $40 = YES !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Want something that's ACTUALLY worth it?!
+
+Not $500 clubs that don't help...
+
+Under FORTY bucks... The Perfect Divot WORKS...
+
+REAL feedback... REAL results...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "SICK of Wasting Money?! 🤔", timing: "Opening" },
+                                { text: "Clubs, Lessons, Gadgets...", timing: "Problem" },
+                                { text: "BEST $40 Ever !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `SICK of spending money on golf that doesn't HELP?!
+
+New driver... no improvement...
+
+Lesson package... still chunking...
+
+Here's what ACTUALLY works...
+
+Under FORTY bucks... ONE time purchase...
+
+The Perfect Divot transforms EVERY practice session...
+
+BEST investment in your game...
+
+golfmatsSUCK.com!`
+                        }
+                    }
+                },
+                tip: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "PRO TIP 💡", timing: "Opening" },
+                                { text: "3/32\" = GAME CHANGER !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `PRO TIP for you!!
+
+STOP trusting range mats... they LIE...
+
+The Perfect Divot tells the TRUTH...
+
+Three thirty-seconds of an inch... GAME CHANGER...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "INSIDER Secret 💡", timing: "Opening" },
+                                { text: "Mats Have Been LYING", timing: "Problem" },
+                                { text: "The 3/32\" FIX !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's an INSIDER secret that'll change your game...
+
+Range mats have been LYING to you... FOREVER...
+
+Fat shots feel PURE... then you chunk it on grass...
+
+The Perfect Divot is the FIX...
+
+Three thirty-seconds of an inch... REAL GRASS FEEL...
+
+Your practice will NEVER be the same...
+
+Get ADDICTED at golfmatsSUCK.com!`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "FEEL Hack 💡", timing: "Opening" },
+                                { text: "REAL Contact Returns !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `FEEL hack for you!!
+
+Mats DESTROY your contact feel...
+
+The Perfect Divot RESTORES it...
+
+Three thirty-seconds... hands KNOW immediately...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "UNLOCK Your Feel 💡", timing: "Opening" },
+                                { text: "Mats Have RUINED It", timing: "Problem" },
+                                { text: "3/32\" RESTORES Everything !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Want to UNLOCK your best feel?!
+
+Here's the secret... mats have been RUINING it...
+
+Every fake bounce... your hands learn WRONG...
+
+The Perfect Divot RESTORES real contact feel...
+
+Three thirty-seconds of an inch... PURE feedback...
+
+Your hands will THANK you...
+
+Get ADDICTED at golfmatsSUCK.com!`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "PRACTICE Hack 💡", timing: "Opening" },
+                                { text: "Quality Over QUANTITY !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `PRACTICE hack for faster improvement!!
+
+It's NOT about how many balls...
+
+It's about FEEDBACK quality...
+
+The Perfect Divot... REAL feedback every swing...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "LEVEL UP Your Practice 💡", timing: "Opening" },
+                                { text: "50 Great Reps > 200 BAD", timing: "Concept" },
+                                { text: "Make Every Swing COUNT !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Want to LEVEL UP your practice?!
+
+Here's the SECRET...
+
+50 balls with REAL feedback beats 200 with FAKE feedback...
+
+Range mats give you GARBAGE information...
+
+The Perfect Divot gives you TRUTH...
+
+Three thirty-seconds of an inch... every rep COUNTS...
+
+TRANSFORM your practice at golfmatsSUCK.com!`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "TRAVEL Hack ✈️", timing: "Opening" },
+                                { text: "NEVER Leave Without It !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `TRAVEL hack for golfers!!
+
+The Perfect Divot fits in your POCKET...
+
+REAL grass feel... ANY mat... ANYWHERE...
+
+NEVER travel without it...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "ESSENTIAL Travel Gear ✈️", timing: "Opening" },
+                                { text: "Unknown Mats = DANGER", timing: "Problem" },
+                                { text: "YOUR Insurance Policy !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `ESSENTIAL gear for traveling golfers!!
+
+Unknown mats are DANGEROUS for your game...
+
+You never know what GARBAGE you're gonna get...
+
+The Perfect Divot is your INSURANCE policy...
+
+Fits in your POCKET... works on ANY surface...
+
+Three thirty-seconds of an inch... CONSISTENT feel everywhere...
+
+NEVER travel without it...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "MONEY Hack 💰", timing: "Opening" },
+                                { text: "Under $40 WINS !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `MONEY hack for smart golfers!!
+
+Skip the expensive GIMMICKS...
+
+The Perfect Divot... under FORTY bucks... ACTUALLY works...
+
+BEST investment ever...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "SAVE Your Money 💰", timing: "Opening" },
+                                { text: "Gimmicks = GARBAGE", timing: "Problem" },
+                                { text: "$40 and DONE Forever !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Want to SAVE money on golf?!
+
+Here's the TRUTH... most training aids are GIMMICKS...
+
+They take your money and collect DUST...
+
+The Perfect Divot is DIFFERENT...
+
+Under FORTY bucks... ONE time... works FOREVER...
+
+REAL feedback... REAL improvement...
+
+SMARTEST purchase you'll make...
+
+golfmatsSUCK.com!`
+                        }
+                    }
+                },
+                bold: {
+                    general: {
+                        "30": {
+                            captions: [
+                                { text: "Your Mat LIES !!", timing: "Opening" },
+                                { text: "THE FIX Is Here !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Your mat is LYING to you!! Every. Single. Time.
+
+Fat shots feel PURE... course time? CHUNK city...
+
+The Perfect Divot exposes the TRUTH...
+
+Get REAL at golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Your Practice is BROKEN !!", timing: "Opening" },
+                                { text: "Mats = FAKE Feedback", timing: "Problem" },
+                                { text: "THE REAL FIX !!", timing: "Middle" },
+                                { text: "Take our 30 Day Test Drive", timing: "CTA" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Your practice is BROKEN!! And it's making you WORSE!!
+
+Every mat session... FAKE feedback... FAKE improvement...
+
+You THINK you're getting better... you're NOT...
+
+The Perfect Divot FIXES this forever...
+
+Three thirty-seconds of an inch... REAL GRASS FEEL...
+
+Take our 30 Day Test Drive... we GUARANTEE you'll become ADDICTED...
+
+golfmatsSUCK.com!`
+                        }
+                    },
+                    feel: {
+                        "30": {
+                            captions: [
+                                { text: "You've LOST Your Feel !!", timing: "Opening" },
+                                { text: "GET IT BACK !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `You've LOST your feel!! I'll tell you WHY...
+
+Range mats!! They train your hands to LIE...
+
+The Perfect Divot brings back TRUTH...
+
+RECLAIM your game at golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Your Hands Are LYING !!", timing: "Opening" },
+                                { text: "Mats RUINED Your Feel", timing: "Problem" },
+                                { text: "TAKE IT BACK !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Your hands are LYING to you!! Every single swing!!
+
+It's NOT your fault... it's the MAT...
+
+That bounce trains your hands WRONG...
+
+On the course? Total DISASTER...
+
+The Perfect Divot RETRAINS your feel...
+
+Three thirty-seconds of an inch... REAL contact feedback...
+
+TAKE BACK your game at golfmatsSUCK.com!`
+                        }
+                    },
+                    practice: {
+                        "30": {
+                            captions: [
+                                { text: "You're Getting WORSE !!", timing: "Opening" },
+                                { text: "STOP The Damage !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `HARSH truth... your practice is making you WORSE!!
+
+Mats let you groove BAD habits...
+
+The Perfect Divot STOPS the damage...
+
+REAL feedback... REAL improvement...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Your Practice BACKFIRES !!", timing: "Opening" },
+                                { text: "GROOVING Bad Habits", timing: "Problem" },
+                                { text: "BREAK The Cycle !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Let me tell you something UNCOMFORTABLE...
+
+All those range hours? BACKFIRING...
+
+Mats hide your mistakes... you PRACTICE them over and over...
+
+You're getting WORSE without knowing it...
+
+The Perfect Divot BREAKS this cycle...
+
+Three thirty-seconds of an inch... EXPOSES every mishit...
+
+FIX problems instead of HIDING them...
+
+BREAK the cycle at golfmatsSUCK.com!`
+                        }
+                    },
+                    portability: {
+                        "30": {
+                            captions: [
+                                { text: "NEVER Trust Strange Mats !!", timing: "Opening" },
+                                { text: "Bring YOUR Fix !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `NEVER trust a mat you don't know!!
+
+They ALL lie differently... ALL garbage...
+
+The Perfect Divot... YOUR fix... YOUR pocket...
+
+TAKE CONTROL at golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "TRUST No Mat !!", timing: "Opening" },
+                                { text: "They're ALL Liars !!", timing: "Problem" },
+                                { text: "YOUR Portable Truth !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Here's a RULE... TRUST NO MAT!!
+
+Every range... different mats... different LIES...
+
+Warm up feeling GREAT... first tee DISASTER...
+
+The Perfect Divot is YOUR portable TRUTH...
+
+Smaller than your PHONE... works EVERYWHERE...
+
+Three thirty-seconds of an inch... CONSISTENT feedback...
+
+DOMINATE any range at golfmatsSUCK.com!`
+                        }
+                    },
+                    value: {
+                        "30": {
+                            captions: [
+                                { text: "STOP Bleeding Money !!", timing: "Opening" },
+                                { text: "$40 FIXES Everything !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `STOP bleeding money on golf!!
+
+Lessons... clubs... gadgets... NOTHING works...
+
+Under FORTY bucks... The Perfect Divot FIXES it...
+
+golfmatsSUCK.com!`
+                        },
+                        "45": {
+                            captions: [
+                                { text: "Golf is DRAINING You 💸", timing: "Opening" },
+                                { text: "And You're NOT Improving", timing: "Problem" },
+                                { text: "The $40 SOLUTION !!", timing: "Middle" },
+                                { text: "golfmatsSUCK.com", timing: "End" }
+                            ],
+                            script: `Golf is DRAINING your wallet!! And you're NOT getting better!!
+
+Drivers... lessons... premium balls... NOTHING helps...
+
+Your handicap? SAME as last year...
+
+HERE'S THE FIX...
+
+Under FORTY bucks... ONE time... FOREVER improvement...
+
+The Perfect Divot... REAL feedback... REAL results...
+
+STOP the bleeding at golfmatsSUCK.com!`
+                        }
+                    }
+                }
+            }
+        };
+
+        function generateScript() {
+            const hookType = document.getElementById('hookType').value;
+            const angle = document.getElementById('angle').value;
+            const length = document.getElementById('length').value;
+            const style = document.getElementById('style').value;
+            
+            const hookLabels = {
+                identity: 'Identity Callout',
+                frustration: 'Shared Frustration',
+                question: 'Question Hook',
+                tip: 'Quick Tip',
+                bold: 'Bold Statement'
+            };
+            
+            const angleLabels = {
+                general: 'General',
+                feel: 'Feel & Contact',
+                practice: 'Practice & Improvement',
+                portability: 'Portability',
+                value: 'Value & Price'
+            };
+            
+            const styleLabels = {
+                analytical: 'Analytical',
+                hype: 'Hype'
+            };
+            
+            const scriptData = scripts[style][hookType][angle][length];
+            const wordCount = scriptData.script.split(/\s+/).length;
+            
+            let captionsHTML = '';
+            scriptData.captions.forEach((caption, index) => {
+                captionsHTML += `
+                    <div class="caption-item">
+                        <span class="caption-number">${index + 1}</span>
+                        <div class="caption-text">${caption.text}</div>
+                        <div class="caption-timing">${caption.timing}</div>
+                    </div>
+                `;
+            });
+            
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                <div class="script-header">
+                    <div class="script-title">${hookLabels[hookType]} × ${angleLabels[angle]}</div>
+                    <div class="script-meta">
+                        <span class="meta-tag length">~${length}s</span>
+                        <span class="meta-tag style-${style}">${styleLabels[style]}</span>
+                        <span class="meta-tag words">~${wordCount} words</span>
+                    </div>
+                </div>
+                
+                <div class="captions-section">
+                    <div class="captions-label">On-Screen Captions</div>
+                    ${captionsHTML}
+                </div>
+                
+                <div class="script-section">
+                    <div class="script-label">Spoken Script</div>
+                    <div class="script-text">${scriptData.script}</div>
+                </div>
+                
+                <button class="copy-btn" onclick="copyScript()">
+                    📋 Copy Full Script
+                </button>
+            `;
+        }
+        
+        function copyScript() {
+            const hookType = document.getElementById('hookType').value;
+            const angle = document.getElementById('angle').value;
+            const length = document.getElementById('length').value;
+            const style = document.getElementById('style').value;
+            
+            const scriptData = scripts[style][hookType][angle][length];
+            
+            let fullText = '=== ON-SCREEN CAPTIONS ===\n\n';
+            scriptData.captions.forEach((caption, index) => {
+                fullText += `${index + 1}. ${caption.text} (${caption.timing})\n`;
+            });
+            fullText += '\n=== SPOKEN SCRIPT ===\n\n';
+            fullText += scriptData.script;
+            
+            navigator.clipboard.writeText(fullText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '✅ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = '📋 Copy Full Script';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        // Generate initial script on load
+        window.onload = generateScript;
     </script>
 </body>
 </html>
